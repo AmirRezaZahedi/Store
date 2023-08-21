@@ -3,9 +3,14 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-
+    {%include 'message.html' %}
+    <div>
+        {% block content %} {% endblock %}
+    </div>
 </body>
 </html>

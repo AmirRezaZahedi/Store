@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'register.css' %}">
+{% endblock %}
+{% block content %}
+    <form action="" method="POST" novalidate>
+        {% csrf_token %}
+        <label for="name">name:</label>
+        <input name="id" type="text">
+        <label for="lastname">lastname:</label>
+        <input name="lastname" type="text">
+        <input type="submit" value="Register">
+    </form>
+{% endblock %}
