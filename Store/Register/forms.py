@@ -3,5 +3,5 @@ from .models import users
 
 class registerform(forms.ModelForm):
     class Meta:
-        modele=users
-        feildes="_all_"
+        model=users
+        fields="__all__"

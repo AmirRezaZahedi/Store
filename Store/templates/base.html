@@ -1,16 +1,12 @@
 ﻿<!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
+  <head>
     <meta charset="utf-8" />
     <title>{% block title %} {% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-    {% block extra_css %}{% endblock %}
-</head>
-<body>
-   
-    <div>
-        {% block content %} {% endblock %}
-    </div>
-</body>
+    {% block htmlhead %}{% endblock htmlhead%}
+  </head>
+  <body>
+    <div>{% block content %} {% endblock %}</div>
+  </body>
 </html>
