@@ -1,12 +1,14 @@
 ﻿<!DOCTYPE html>
-
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
     <title>{% block title %} {% endblock %}</title>
-    {% block htmlhead %}{% endblock htmlhead%}
-  </head>
-  <body>
-    <div>{% block content %} {% endblock %}</div>
-  </body>
+
+    {% block extra_css %}{% endblock %}
+   </head>
+<body>
+    <div>
+        {% block content %} {% endblock %}
+    </div>
+</body>
 </html>
