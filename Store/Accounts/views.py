@@ -9,12 +9,12 @@ def register(request):
     if request.method == 'POST':
         form = registerform(request.POST)
         if form.is_valid():
-                cd = form.cleaned_data
-                User = User.objects.create_User(cd['Username'], cd['email'], cd['password'])
-                User.first_name = cd['first_name']
-                User.last_name = cd['last_name']
-                User.save()
-                return redirect('login')
+            cd = form.cleaned_data
+            user = User.objects.create_user(cd['username'], cd['email'], cd['password'])
+            user.first_name = cd['first_name']
+            user.last_name = cd['last_name']
+            user.save()
+            return redirect('login')
     else:
         form = registerform()
     return render(request,"register.html",{'form':form})
@@ -26,11 +26,11 @@ def login(request):
         
         form=loginform(request.POST)   
         if form.is_valid():
-            credentials = form.cleaned_data
-            User = authenticate(request, Username=credentials['Username'],password=credentials['password'])
-            if User is not None:
-                    log(request, User)
-                    return redirect('register')
+            cd = form.cleaned_data
+            user = authenticate(request, username=cd['username'],password=cd['password'])
+            if user is not None:
+                log(request, user)
+                return redirect('register')
             
         return redirect('login')
 
