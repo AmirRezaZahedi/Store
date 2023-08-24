@@ -1,11 +1,14 @@
-﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="stylesheet" type="text/css" href="{% static 'loginpage.css' %}">-->
+    {% block additional_css %}{% endblock %}
+    <title>{% block title %}Base{% endblock %}</title>
 </head>
 <body>
-
+    {% block content %}{% endblock %}
 </body>
 </html>

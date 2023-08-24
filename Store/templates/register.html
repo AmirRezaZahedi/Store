@@ -1,24 +1,17 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}Register{% endblock %}
+
+{% block additional_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'registerpage.css' %}">
-    <title>Register</title>
-</head>
-<body>
+{% endblock %}
 
-    <form action="" method="POST" novalidate>
-        {% csrf_token %} 
-        {{form.as_p}}
-        <input type="submit" class="save btn btn-default"></input>
-    </form>
-
-
-</body>
-</html>
-
-
-
-
+{% block content %}
+    <div>
+        <form action="" method="POST" novalidate>
+            {% csrf_token %} 
+            {{form.as_p}}
+            <input type="submit" class="btn" value="register user"></input>
+        </form>
+    </div>
+{% endblock %}

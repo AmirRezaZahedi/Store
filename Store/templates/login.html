@@ -1,24 +1,13 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}Login{% endblock %}
+{% block additional_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'loginpage.css' %}">
-    <title>Register</title>
-</head>
-<body>
-
+{% endblock %}
+{% block content %}
     <form action="" method="POST" novalidate>
         {% csrf_token %} 
         {{form.as_p}}
-        <input type="submit" class="save btn btn-default"></input>
+        <input type="submit" class="btn"></input>
     </form>
-
-
-</body>
-</html>
-
-
-
-
+{% endblock %}

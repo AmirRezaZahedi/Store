@@ -60,5 +60,5 @@ def login(request):
     else:
         form=loginform()
 
-    return render(request,"register.html",{'form':form})
+    return render(request,"login.html",{'form':form})
 
