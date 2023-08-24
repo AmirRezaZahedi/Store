@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='users',
+            model_name='User',
             name='access',
             field=models.IntegerField(choices=[(0, 'seller'), (1, 'customer')], default=1),
         ),

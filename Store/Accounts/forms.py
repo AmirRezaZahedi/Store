@@ -1,12 +1,26 @@
 from django import forms
-from .models import users
+from .models import User
 
+'''
 class registerform(forms.ModelForm):
     class Meta:
-        model=users
-        fields="__all__"
+        model=User
+        fields= ('Username','password','email','first_name','last_name','access')
 
 class loginform(forms.ModelForm):
     class Meta:
-        model=users
-        fields="__all__"
+        model=User
+        fields= ('Username','password','email','first_name','last_name','access')
+'''
+class registerform(forms.Form):
+    Username = forms.CharField()
+    email = forms.EmailField()
+    password = forms.CharField()
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+class loginform(forms.Form):
+    Username = forms.CharField()
+    email = forms.EmailField()
+    password = forms.CharField()
+    first_name = forms.CharField()
+    last_name = forms.CharField()
