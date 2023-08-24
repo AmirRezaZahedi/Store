@@ -11,3 +11,5 @@ class User(AbstractUser):
 
     access = models.IntegerField(
          choices=ACCESS_CHOICES, default=1)
+
+

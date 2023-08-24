@@ -1,7 +1,7 @@
 from wsgiref import validate
 from django.shortcuts import render,redirect
 from .models import User
-from .forms import registerform, loginform
+from .forms import registerform, loginform, seller_registerform
 from django.contrib.auth import authenticate, login as log, logout
 
 def register(request):
@@ -19,7 +19,31 @@ def register(request):
 
     else:
         form = registerform()
+
     return render(request,"register.html",{'form':form})
+
+
+
+def seller_register(request):
+
+    if request.method == 'POST':
+
+        form = seller_registerform(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = User.objects.create_user(cd['username'], cd['email'], cd['password'])
+            user.first_name = cd['first_name']
+            user.last_name = cd['last_name']
+            
+            user.save()
+            return redirect('login')
+
+    else:
+        form = seller_registerform()
+
+    return render(request,"seller_register.html",{'form':form})
+
+
 
 def login(request):
     
