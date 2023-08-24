@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login as log, logout
 def register(request):
 
     if request.method == 'POST':
+
         form = registerform(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
@@ -15,12 +16,12 @@ def register(request):
             user.last_name = cd['last_name']
             user.save()
             return redirect('login')
+
     else:
         form = registerform()
     return render(request,"register.html",{'form':form})
 
 def login(request):
-
     
     if request.method =="POST":
         
@@ -30,10 +31,8 @@ def login(request):
             user = authenticate(request, username=cd['username'],password=cd['password'])
             if user is not None:
                 log(request, user)
-                return redirect('register')
+                return redirect('home')
             
-        return redirect('login')
-
     else:
         form=loginform()
 
