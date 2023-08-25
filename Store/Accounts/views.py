@@ -41,7 +41,7 @@ def seller_register(request):
     else:
         form = seller_registerform()
 
-    return render(request,"seller_register.html",{'form':form})
+    return render(request,"sellerRegister.html",{'form':form})
 
 
 
@@ -62,3 +62,7 @@ def login(request):
 
     return render(request,"login.html",{'form':form})
 
+def logout_view(request):
+    logout(request)
+    #messages.success(request, 'logout:)', 'success')
+    return redirect('home')

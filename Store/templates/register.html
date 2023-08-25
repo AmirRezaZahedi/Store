@@ -8,10 +8,12 @@
 
 {% block content %}
     <div>
+        <h2>صفحه ثبت نام خریدار</h2>
         <form action="" method="POST" novalidate>
             {% csrf_token %} 
             {{form.as_p}}
             <input type="submit" class="btn" value="register user"></input>
+            <a href="{% url 'sellerRegister' %}" class="btn btn-primary">آیا شما یک فروشنده هستید؟ کلیک کنید</a>
         </form>
     </div>
 {% endblock %}

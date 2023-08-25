@@ -9,7 +9,9 @@ body {
     align-items: center;
     min-height: 100vh;
 }
-
+form * {
+    margin: 0;
+}
 form {
     max-width: 600px; 
     width: 100%; 
@@ -57,4 +59,10 @@ form input[type="text"]:focus,
 form input[type="email"]:focus {
     border-color: #1dd265;
     box-shadow: 0 0 5px #1dd265;
+}
+
+form .btn-primary {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
 }
