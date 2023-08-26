@@ -1,11 +1,10 @@
 from wsgiref import validate
 from django.shortcuts import render,redirect
-from .models import User
+from .models import User, Customer, Seller
 from .forms import registerform, loginform, seller_registerform
 from django.contrib.auth import authenticate, login as log, logout
 
-def register_user(form):
-    cd = form.cleaned_data
+def register_user(cd):
     user = User.objects.create_user(cd['username'], cd['email'], cd['password'])
     user.first_name = cd['first_name']
     user.last_name = cd['last_name']
@@ -16,7 +15,10 @@ def register(request):
     if request.method == 'POST':
         form = registerform(request.POST)
         if form.is_valid():
-            user = register_user(form)
+            cd = form.cleaned_data
+            user = register_user(cd)
+            user = Customer()
+            user.save()
             return redirect('login')
     else:
         form = registerform()
@@ -27,7 +29,11 @@ def seller_register(request):
     if request.method == 'POST':
         form = seller_registerform(request.POST)
         if form.is_valid():
-            user = register_user(form)
+            cd = form.cleaned_data
+            myuser = register_user(cd)
+            user = Seller(store_name=cd['store_name'], store_type=cd['store_type'])
+            user.user = myuser.username
+            user.save()
             return redirect('login')
     else:
         form = seller_registerform()
