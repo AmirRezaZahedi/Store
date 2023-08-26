@@ -17,6 +17,8 @@ def register(request):
         if form.is_valid():
             cd = form.cleaned_data
             myuser = register_user(cd)
+            myuser.access=1
+            myuser.save()
             customer = Customer(user=myuser)
             customer.save()
             return redirect('login')
@@ -31,6 +33,8 @@ def seller_register(request):
         if form.is_valid():
             cd = form.cleaned_data
             myuser = register_user(cd)
+            myuser.access=0
+            myuser.save()
             seller = Seller(user=myuser, store_name=cd['store_name'], store_type=cd['store_type'])
             seller.save()
             return redirect('login')
