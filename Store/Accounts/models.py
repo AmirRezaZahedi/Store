@@ -13,7 +13,7 @@ class User(AbstractUser):
          choices=ACCESS_CHOICES, default=1)
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,  primary_key=True)
     
 class Seller(models.Model):
     CHOICES=(
@@ -26,6 +26,6 @@ class Seller(models.Model):
       
     )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,  primary_key=True)
     store_name = models.CharField(max_length=20)
     store_type = models.IntegerField(choices=CHOICES)

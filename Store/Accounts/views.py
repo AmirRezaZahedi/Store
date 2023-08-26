@@ -16,9 +16,9 @@ def register(request):
         form = registerform(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = register_user(cd)
-            user = Customer()
-            user.save()
+            myuser = register_user(cd)
+            customer = Customer(user=myuser)
+            customer.save()
             return redirect('login')
     else:
         form = registerform()
@@ -31,9 +31,8 @@ def seller_register(request):
         if form.is_valid():
             cd = form.cleaned_data
             myuser = register_user(cd)
-            user = Seller(store_name=cd['store_name'], store_type=cd['store_type'])
-            user.user = myuser.username
-            user.save()
+            seller = Seller(user=myuser, store_name=cd['store_name'], store_type=cd['store_type'])
+            seller.save()
             return redirect('login')
     else:
         form = seller_registerform()
@@ -48,10 +47,17 @@ def login(request):
         form=loginform(request.POST)   
         if form.is_valid():
             cd = form.cleaned_data
+            
             user = authenticate(request, username=cd['username'],password=cd['password'])
             if user is not None:
                 log(request, user)
-                return redirect('home')
+                myuser=User.objects.get(username=cd['username'])
+                if myuser.access == 1:
+                    print("customer")
+                    return redirect('home')
+                else:
+                    print("seller")
+                    pass
             
     else:
         form=loginform()
