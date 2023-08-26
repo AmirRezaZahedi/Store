@@ -13,7 +13,6 @@
             {% csrf_token %} 
             {{form.as_p}}
             <input type="submit" class="btn" value="register user"></input>
-            <a href="{% url 'sellerRegister' %}" class="btn btn-primary">آیا شما یک فروشنده هستید؟ کلیک کنید</a>
         </form>
     </div>
 {% endblock %}

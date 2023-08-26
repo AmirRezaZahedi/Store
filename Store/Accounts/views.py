@@ -53,11 +53,9 @@ def login(request):
                 log(request, user)
                 myuser=User.objects.get(username=cd['username'])
                 if myuser.access == 1:
-                    print("customer")
                     return redirect('home')
                 else:
-                    print("seller")
-                    pass
+                    return redirect('sellerProfile')
             
     else:
         form=loginform()

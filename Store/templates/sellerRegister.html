@@ -1,13 +1,18 @@
-﻿{% load static %}
+﻿{% extends 'base.html' %}
+{% load static %}
 
+{% block title %}Register{% endblock %}
 
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'registerpage.css' %}">
+{% endblock %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'sellerRegister.css' %}">
 {% block content %}
-    <h2>صفحه ثبت نام فروشنده</h2>
-    <form action="" method="POST" novalidate>
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" class="save btn btn-default"></input>
-    </form>
+<h2>صفحه ثبت نام فروشنده</h2>
+<form action="" method="POST" novalidate>
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" class="save btn btn-default"></input>
+</form>
 {% endblock %}
