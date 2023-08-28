@@ -1,0 +1,30 @@
+
+    .navbar {
+        padding: 10px;
+        background-color: #34495e; 
+    }
+
+    .navbar-nav {
+        text-align: right; 
+    }
+
+    .nav-item {
+        margin-right: 15px; 
+    }
+
+    .nav-link {
+        color: #ffffff;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+   
+    .btn-primary {
+        background-color: #e74c3c;
+        border-color: #e74c3c; 
+    }
+
+    .btn-primary:hover {
+        background-color: #c0392b; 
+        border-color: #c0392b; 
+    }

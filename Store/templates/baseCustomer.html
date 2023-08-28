@@ -2,7 +2,7 @@
 {% load static %}
 {% block additional_css %}
 
-
+<link rel="stylesheet" type="text/css" href="{% static 'homepage.css' %}">
 {% endblock %}
 {% block content %}
 <div class="container">
@@ -12,8 +12,8 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Home</a>
                 </li>
-                <li class="nav-item active">
-                    <a href="{% url 'sellerRegister' %}" class="btn btn-primary">Join our group of sellers</a>
+                <li class="nav-item">
+                    <a href="{% url 'sellerRegister' %}" class="nav-link">Join our group of sellers</a>
                 </li>
                 {% if not user.is_authenticated %}
                 <li class="nav-item">
@@ -35,4 +35,3 @@
     </nav>
 </div>
 {% endblock %}
-{% block content2 %}{% endblock %}
