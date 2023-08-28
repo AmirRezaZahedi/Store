@@ -12,9 +12,9 @@ class product_detailform(forms.Form):
 
     name = forms.CharField()
     image = forms.ImageField()
-    price = forms.PositiveIntegerField()
-    quantity = forms.PositiveIntegerField()
-    product_quantity = forms.IntegerField(choices=CHOICES)
+    price = forms.DecimalField(min_value=0)
+    quantity = forms.IntegerField(min_value=0)
+    product_quantity = forms.ChoiceField(choices=CHOICES)
 
 class productform(forms.Form):
 
@@ -27,8 +27,8 @@ class productform(forms.Form):
 
     name = forms.CharField()
     image = forms.ImageField()
-    price = forms.PositiveIntegerField()
-    quantity = forms.PositiveIntegerField()
+    price = forms.DecimalField(min_value=0)
+    quantity = forms.IntegerField(min_value=0)
     
 
 
