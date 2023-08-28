@@ -2,7 +2,7 @@
 {% load static %}
 {% block additional_css %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'homepage.css' %}">
+
 {% endblock %}
 {% block content %}
 <div class="container">
@@ -12,11 +12,9 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Home</a>
                 </li>
-                
                 <li class="nav-item active">
-                    <a href="{% url 'sellerRegister' %}" class="btn btn-primary">به جمع فروشندگان ما بپیوندید</a>
+                    <a href="{% url 'sellerRegister' %}" class="btn btn-primary">Join our group of sellers</a>
                 </li>
-                
                 {% if not user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'register' %}">Register/Sign up</a>
@@ -32,7 +30,6 @@
                     <a class="nav-link" href="{% url 'logout' %}">Log out</a>
                 </li>
                 {% endif %}
-
             </ul>
         </div>
     </nav>
