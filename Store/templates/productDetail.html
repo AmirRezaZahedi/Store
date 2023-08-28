@@ -2,12 +2,14 @@
 {% load static %}
 {% block title %}Login{% endblock %}
 {% block additional_css %}
-<link rel="stylesheet" type="text/css" href="{% static 'loginpage.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'productDetail.css' %}">
 {% endblock %}
 {% block content %}
-<form action="" method="POST" novalidate>
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" class="btn"></input>
-</form>
+<div class="form-container">
+    <form action="" method="POST" novalidate>
+        {% csrf_token %} 
+        {{form.as_p}}
+        <input type="submit" class="btn" value="submit product"></input>
+    </form>
+</div>
 {% endblock %}

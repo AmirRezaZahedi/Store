@@ -1,30 +1,67 @@
+* {
+  box-sizing: border-box; 
+}
+h1{
+  text-align: center;
+  font-size: 12px;
+}
+body {
+  background-color: #cccccc88;
+  margin: 0;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
-    .navbar {
-        padding: 10px;
-        background-color: #34495e; 
-    }
+/* Navigation Bar Styles */
+.navbar {
+  background-color: #ced3d9;
+  border: none;
+  border-radius: 0;
+}
 
-    .navbar-nav {
-        text-align: right; 
-    }
+.navbar-nav {
+  display: flex;
+  align-items: center;
+}
 
-    .nav-item {
-        margin-right: 15px; 
-    }
+.nav-item {
+  margin: 0 15px;
+}
 
-    .nav-link {
-        color: #ffffff;
-        font-weight: bold;
-        text-decoration: none;
-    }
+.nav-link {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
 
-   
-    .btn-primary {
-        background-color: #e74c3c;
-        border-color: #e74c3c; 
-    }
+.nav-link:hover {
+  color: #f8f9fa;
+}
 
-    .btn-primary:hover {
-        background-color: #c0392b; 
-        border-color: #c0392b; 
-    }
+/* Button Styles */
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+/* Hover Animation */
+.nav-link {
+  color: #ffffff;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  font-weight: bold;
+  color: #e4f84a;
+}

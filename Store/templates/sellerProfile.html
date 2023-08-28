@@ -1,8 +1,41 @@
 {% extends 'baseSeller.html' %}
+{% load static %}
+{% block title %}Seller Page{% endblock %}
+{% block additional_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'sellerProfile.css' %}">
+{% endblock %}
+{% block content%}
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                {% if not user.is_authenticated %}
+                <li class="nav-item active">
+                    <a href="{% url 'sellerRegister' %}" class="nav-link">به جمع فروشندگان ما بپیوندید</a>
+                </li>
+                {% endif %}
+                {% if not user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register/Sign up</a>
+                </li>
+                {% endif %}
+                {% if not user.is_authenticated %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+                </li>
+                {% endif %}
 
-{% block title %}Profile{% endblock %}
-
-{% block content2 %}
-
+            </ul>
+        </div>
+    </nav>
+</div>
 
 {% endblock %}

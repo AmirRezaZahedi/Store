@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect
+from django.contrib.auth.decorators import login_required
 from .models import Product, productField
 from .forms import product_detailform,productform
 
-create=0
-update=1
+create = 0
+update = 1
 
 def create_product(cd):
     # Create a new product with provided data
@@ -32,29 +33,29 @@ def product_manager(request):
 
     return render(request,"productManager.html")
 
-
+@login_required
 def product_detail(request,type,id):
 
     if request.method == 'POST':
 
-        if type==create:
+        if type == create:
         
             form = product_detailform(request.POST)
 
             if form.is_valid():
-                cd=form.cleaned_data
-                product=create_product(cd)
+                cd = form.cleaned_data
+                product = create_product(cd)
 
                 return redirect('productManager')
        
 
-        elif type==update:
+        elif type == update:
             
             form = product_detailform(request.POST)
 
             if form.is_valid():
-                cd=form.cleaned_data
-                product=update_product(cd,id)
+                cd = form.cleaned_data
+                product = update_product(cd,id)
 
                 return redirect('productManager')
 
