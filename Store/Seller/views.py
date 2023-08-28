@@ -39,7 +39,8 @@ def product_detail(request,type,id):
 
             if form.is_valid():
                 cd=form.cleaned_data
-                create_product(cd)
+                product=create_product(cd)
+
                 return redirect('productManager')
        
 
@@ -49,8 +50,9 @@ def product_detail(request,type,id):
 
             if form.is_valid():
                 cd=form.cleaned_data
-                update_product(cd,id)
-                return redirect('productDetail')
+                product=update_product(cd,id)
+
+                return redirect('productManager')
 
         else:
             pass
@@ -60,11 +62,9 @@ def product_detail(request,type,id):
 
     return render(request, "productDetail.html", {'form': form})
 
-def product_delete(request,type,id):
-
+def product_delete(request,id):
     
-    
-    return render(request, "productDetail.html", {'form': form})
+    return redirect('productManager')
     
 
         
