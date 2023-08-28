@@ -15,7 +15,11 @@ def create_product(cd):
 def update_product(cd,id):
     # Updta a new product with provided data
     product = Product.objects.get(id=id)
-    
+    product.name = cd["name"]
+    product.price = cd["price"]
+    product.quantity = cd["quantity"]
+    product.product_quantity= cd["product_quantity"]
+    product.image = cd["image"]
     product.save()
     return product
 
@@ -26,7 +30,7 @@ def seller_profile(request):
 
 def product_manager(request):
 
-    return render(request,"productManager")
+    return render(request,"productManager.html")
 
 
 def product_detail(request,type,id):
@@ -63,6 +67,9 @@ def product_detail(request,type,id):
     return render(request, "productDetail.html", {'form': form})
 
 def product_delete(request,id):
+
+    product = Product.objects.get(id=id)
+    product.delete()
     
     return redirect('productManager')
     
