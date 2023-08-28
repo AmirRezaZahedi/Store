@@ -17,12 +17,12 @@ class Customer(models.Model):
     
 class Seller(models.Model):
     CHOICES=(
-        (1,"لوازم خانگی"),
-        (2,"لبنیات"),
-        (3,"شیرینی فروشی"),
-        (4,"لوازم الکترونیک"),
-        (5,"سوپر مارکت"),
-   
+         (0,"لوازم خانگی"),
+         (1,"لبنیات"),
+         (2,"شیرینی فروشی"),
+         (3,"لوازم الکترونیک"),
+         (4,"سوپر مارکت"),
+    
       
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE,  primary_key=True)

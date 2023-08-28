@@ -2,14 +2,20 @@ from django.shortcuts import render,redirect
 from .models import Product, productField
 from .forms import product_detailform,productform
 
-create=1
-update=2
+create=0
+update=1
 
 def create_product(cd):
     # Create a new product with provided data
-    product = Product(cd['username'], cd['email'], cd['password'])
-    product.first_name = cd['first_name']
-    product.last_name = cd['last_name']
+    product = Product(name=cd['name'], price=cd['price'], quantity=cd['quantity'],product_quantity=cd['product_quantity'],image=cd['image'])
+    
+    product.save()
+    return product
+
+def update_product(cd,id):
+    # Updta a new product with provided data
+    product = Product.objects.get(id=id)
+    
     product.save()
     return product
 
@@ -18,9 +24,9 @@ def seller_profile(request):
 
     return render(request,"sellerProfile.html")
 
-def products_panel(request):
+def product_manager(request):
 
-    return render(request,"productsPanel.html")
+    return render(request,"productManager")
 
 
 def product_detail(request,type,id):
@@ -29,22 +35,21 @@ def product_detail(request,type,id):
 
         if type==create:
         
-            
             form = product_detailform(request.POST)
 
             if form.is_valid():
-                
-                return redirect('productDetail')
+                cd=form.cleaned_data
+                create_product(cd)
+                return redirect('productManager')
        
 
         elif type==update:
-
-        
             
             form = product_detailform(request.POST)
 
             if form.is_valid():
-                
+                cd=form.cleaned_data
+                update_product(cd,id)
                 return redirect('productDetail')
 
         else:
@@ -58,19 +63,8 @@ def product_detail(request,type,id):
 def product_delete(request,type,id):
 
     
-    if type==delete:
-        if request.method == 'POST':
-            
-            form = product_detailform(request.POST)
-
-            if form.is_valid():
-                
-                return redirect('productDetail')
-        else:
-            
-            form = product_detailform()
-
-            return render(request, "productDetail.html", {'form': form})
+    
+    return render(request, "productDetail.html", {'form': form})
     
 
         

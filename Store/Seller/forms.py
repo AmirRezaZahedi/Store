@@ -4,42 +4,32 @@
 class product_detailform(forms.Form):
 
     CHOICES=(
-        (1,"لوازم خانگی"),
-        (2,"لبنیات"),
-        (3,"شیرینی فروشی"),
-        (4,"لوازم الکترونیک"),
-        (5,"سوپر مارکت"),
-   
+        (0,"تعدادی"),
+        (1,"کیلویی"),
+       
       
     )
 
-    username = forms.CharField()
-    email = forms.EmailField()
-    password = forms.CharField()
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-
-    store_name = forms.CharField()
-    store_type = forms.ChoiceField(choices=CHOICES)
+    name = forms.CharField()
+    image = forms.ImageField()
+    price = forms.PositiveIntegerField()
+    quantity = forms.PositiveIntegerField()
+    product_quantity = forms.IntegerField(choices=CHOICES)
 
 class productform(forms.Form):
 
     CHOICES=(
-        (1,"لوازم خانگی"),
-        (2,"لبنیات"),
-        (3,"شیرینی فروشی"),
-        (4,"لوازم الکترونیک"),
-        (5,"سوپر مارکت"),
-   
+        (0,"تعدادی"),
+        (1,"کیلویی"),
+       
       
     )
 
-    username = forms.CharField()
-    email = forms.EmailField()
-    password = forms.CharField()
-    first_name = forms.CharField()
-    last_name = forms.CharField()
+    name = forms.CharField()
+    image = forms.ImageField()
+    price = forms.PositiveIntegerField()
+    quantity = forms.PositiveIntegerField()
+    
 
-    store_name = forms.CharField()
-    store_type = forms.ChoiceField(choices=CHOICES)
+
      
