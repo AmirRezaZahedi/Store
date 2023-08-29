@@ -53,8 +53,9 @@ def create_product(request):
             product=Product()
             product.seller = request.user.seller
             product = update_product(cd,product)
-        
-            return redirect('home')
+            product.save()
+
+            return redirect('productManager')
     else:
         form = product_detailform()
     
