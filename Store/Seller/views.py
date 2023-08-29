@@ -13,6 +13,7 @@ def update_product(cd,product):
     product.quantity = cd["quantity"]
     product.product_quantity= cd["product_quantity"]
     product.image = cd["image"]
+
     return product
 
 def fill_form(request,product):
@@ -37,8 +38,9 @@ def seller_profile(request):
 
 @login_required
 def product_manager(request):
-    user = request.user
-    seller = user.objects.filter()
+
+
+    products =request.user.seller.product_set.all()
 
     return render(request,"productManager.html",{'products':products})
 
@@ -55,12 +57,8 @@ def create_product(request):
             product.seller = request.user.seller
             product = update_product(cd,product)
             product.save()
-
-<<<<<<< Updated upstream
             return redirect('productManager')
-=======
-            return redirect('home')
->>>>>>> Stashed changes
+
     else:
         form = product_detailform()
     

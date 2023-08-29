@@ -1,9 +1,25 @@
 {% extends 'baseSeller.html' %}
-
+{% load static %}
 {% block title %}Profile{% endblock %}
+
+{% block additional_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'productManager.css' %}">
+{% endblock %}
 
 {% block content%}
 
+
+    <div class="card-container">
+        {% for product in products %}
+
+            <div class="card">
+                <img src="{{ product.image }}" class="card-image" alt="{{ product.name }}">
+                <h2 class="card-title">{{ product.name }}</h2>
+                <p class="card-price">Price: {{ product.price }}</p>
+                <p class="card-quantity">Quantity: {{ product.quantity }}</p>
+            </div>
+        {% endfor %}
+    </div>
 
 
 {% endblock %}
