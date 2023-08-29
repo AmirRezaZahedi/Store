@@ -1,4 +1,5 @@
 # Import necessary modules and models
+from ast import Not
 from django.contrib.auth import authenticate, login as log, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -58,7 +59,7 @@ def seller_register(request):
 
     return render(request, "sellerRegister.html", {'form': form})
 
-# User login view
+
 def login(request):
     if request.method == "POST":
         # Process the login form data
@@ -83,7 +84,8 @@ def login(request):
 
     return render(request, "login.html", {'form': form})
 
-# User logout view
+
+@login_required
 def logout_view(request):
     # Log the user out
     logout(request)
