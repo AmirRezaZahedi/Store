@@ -12,7 +12,6 @@ def update_product(cd,product):
     product.quantity = cd["quantity"]
     product.product_quantity= cd["product_quantity"]
     product.image = cd["image"]
-    product.save()
     return product
 
 def fill_form(request,product):
@@ -61,7 +60,7 @@ def create_product(request):
 
 
 @login_required
-def update_product(request,id):
+def update_Product(request,id):
     if request.method == 'POST':
         form = product_detailform(request.POST,request.FILES)
         
@@ -70,7 +69,7 @@ def update_product(request,id):
             cd = form.cleaned_data
             product = Product.objects.get(id=id)
             product = update_product(cd,product)
-
+            product.save()
             return redirect('productManager')
     else:
         product = Product.objects.get(id=id)
