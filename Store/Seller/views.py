@@ -27,10 +27,12 @@ def fill_form(request,product):
 
 
 
+
 @login_required
 def seller_profile(request):
 
     return render(request,"sellerProfile.html")
+
 
 @login_required
 def product_manager(request):
@@ -50,7 +52,7 @@ def create_product(request):
             cd = form.cleaned_data
             product=Product()
             product.seller = request.user.seller
-            product = update_product(cd)
+            product = update_product(cd,product)
         
             return redirect('home')
     else:
