@@ -25,6 +25,6 @@ class Seller(models.Model):
     
       
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE,  primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,  primary_key=True, related_name='seller')
     store_name = models.CharField(max_length=20)
     store_type = models.IntegerField(choices=CHOICES)

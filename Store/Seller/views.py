@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .models import Product, productField
+from Accounts.models import User, Seller
 from .forms import product_detailform
 
 
@@ -36,8 +37,8 @@ def seller_profile(request):
 
 @login_required
 def product_manager(request):
-
-    products = Product.objects.all(id=request.user.seller.product.id)
+    user = request.user
+    seller = user.objects.filter()
 
     return render(request,"productManager.html",{'products':products})
 
@@ -55,7 +56,11 @@ def create_product(request):
             product = update_product(cd,product)
             product.save()
 
+<<<<<<< Updated upstream
             return redirect('productManager')
+=======
+            return redirect('home')
+>>>>>>> Stashed changes
     else:
         form = product_detailform()
     
