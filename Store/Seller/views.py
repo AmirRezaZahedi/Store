@@ -6,11 +6,11 @@ from .forms import product_detailform,productform
 create = 0
 update = 1
 
-def create_product(cd):
+def add_new_product(cd):
     # Create a new product with provided data
     product = Product(name=cd['name'], price=cd['price'], quantity=cd['quantity'],product_quantity=cd['product_quantity'],image=cd['image'])
     
-    product.save()
+
     return product
 
 def update_product(cd,id):
@@ -32,6 +32,38 @@ def seller_profile(request):
 def product_manager(request):
 
     return render(request,"productManager.html")
+
+@login_required
+def create_product(request):
+    if request.method == 'POST':
+        form = product_detailform(request.POST, request.FILES)
+
+        if form.is_valid():
+            print("terst")
+            cd = form.cleaned_data
+            product = add_new_product(cd)
+            product.seller = request.user.seller
+            product.save()
+            return redirect('home')
+    else:
+        form = product_detailform()
+    
+    return render(request, "productDetail.html", {'form': form})
+'''
+@login_required
+def update_product(request):
+    if request.method == 'POST':
+        form = product_detailform(request.POST)
+
+        if form.is_valid():
+            cd = form.cleaned_data
+            product = update_product(cd,id)
+
+            return redirect('productManager')
+    else:
+        form = product_detailform()
+    return render(request, "productDetail.html", {'form': form})
+'''
 
 @login_required
 def product_detail(request,type,id):

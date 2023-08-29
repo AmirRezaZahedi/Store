@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Login{% endblock %}
+{% block title %}create product{% endblock %}
 {% block additional_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'productDetail.css' %}">
 {% endblock %}
 {% block content %}
 <div class="form-container">
-    <form action="" method="POST" novalidate>
+    <form action="#" method="POST" enctype="multipart/form-data">
         {% csrf_token %} 
         {{form.as_p}}
         <input type="submit" class="btn" value="submit product"></input>
