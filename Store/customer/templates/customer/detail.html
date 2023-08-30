@@ -19,7 +19,7 @@
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{form.as_p}}
-        <a href="{% url 'order' product.id %}"><input type="submit" class="btn" value="order"></input></a>
+        <input type="submit" class="btn" href="{% url 'order' product.id %}" value="order"></input>
     </form>
 </div>
 {% endblock %}

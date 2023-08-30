@@ -51,6 +51,7 @@ def product_detail(request,id):
 
 @login_required
 def order(request,id):
+    print("hello")
 
     form = orderform(request.POST)
     cd = form.cleaned_data
@@ -62,7 +63,12 @@ def order(request,id):
     cart.product=product
     cart.number=number
     cart.save()
+    return redirect('products')
+    
 
 def show_cart(request):
-    cart = request.user.customer.cart
+
+    cart =request.user.customer.cart_set.all()
+
     return render(request, "customer/cart.html", {'cart': cart})
+
