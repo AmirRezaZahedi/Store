@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from .models import Product, productField
+from .models import Cart 
+from Seller.models import Product , productField
 from Accounts.models import User, Seller
 from .forms import filterform
 
@@ -30,14 +31,19 @@ def show_products(request):
 
 @login_required
 def product_detail(request,id):
-     
+
+    product=Product.objects.get(id=id)
     
     return render(request,"Seller/productManager.html",{'product':product})
 
 
 @login_required
-def order(request,id):
+def order(request,id,number):
 
-    Product.objects.get(id=id).delete()
+    product=Product.objects.get(id=id)
+    cart=Cart()
+    cart.customer=request.user.customer
+    cart.product=product
+    cart.number=number
     
     return redirect('productManager')
