@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'Accounts',
     'Home',
     'Seller',
+    'customer'
 ]
 
 MIDDLEWARE = [

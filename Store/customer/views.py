@@ -9,6 +9,10 @@ def query_by_filter(cd,request):
     products =request.user.seller.product_set.all()
     return products
 
+def customer_profile(request):
+    pass
+def home(request):
+    pass
 
 @login_required
 def show_products(request):
