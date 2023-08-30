@@ -45,7 +45,8 @@ def product_detail(request,id):
     form=orderform()
     product=Product.objects.get(id=id)
     
-    return render(request,"customer/detail.html",{'product':product},{'form':form})
+    return render(request, "customer/detail.html", {'product': product, 'form': form})
+
 
 
 @login_required

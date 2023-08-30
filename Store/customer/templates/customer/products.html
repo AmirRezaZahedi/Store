@@ -1,5 +1,9 @@
 {% extends 'customer/baseCustomer.html' %}
+{% load static %}
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{% static '/customer/products.css' %}">
 
+{% endblock %}
 {% block title %}Profile{% endblock %}
 
 {% block content2 %}
