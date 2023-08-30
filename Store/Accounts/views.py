@@ -35,7 +35,7 @@ def register(request):
         # Display an empty registration form
         form = registerform()
 
-    return render(request, "customerRegister.html", {'form': form})
+    return render(request, "Accounts/customerRegister.html", {'form': form})
 
 # Seller registration view
 def seller_register(request):
@@ -57,7 +57,7 @@ def seller_register(request):
         # Display an empty seller registration form
         form = seller_registerform()
 
-    return render(request, "sellerRegister.html", {'form': form})
+    return render(request, "Accounts/sellerRegister.html", {'form': form})
 
 
 def login(request):
@@ -82,7 +82,7 @@ def login(request):
         # Display an empty login form
         form = loginform()
 
-    return render(request, "login.html", {'form': form})
+    return render(request, "Accounts/login.html", {'form': form})
 
 
 @login_required

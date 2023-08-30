@@ -33,7 +33,7 @@ def fill_form(request,product):
 @login_required
 def seller_profile(request):
 
-    return render(request,"sellerProfile.html")
+    return render(request,"Seller/sellerProfile.html")
 
 
 @login_required
@@ -42,7 +42,7 @@ def product_manager(request):
 
     products =request.user.seller.product_set.all()
 
-    return render(request,"productManager.html",{'products':products})
+    return render(request,"Seller/productManager.html",{'products':products})
 
 
 @login_required
@@ -62,7 +62,7 @@ def create_product(request):
     else:
         form = product_detailform()
     
-    return render(request, "productDetail.html", {'form': form})
+    return render(request, "Seller/productDetail.html", {'form': form})
 
 
 @login_required
@@ -83,7 +83,7 @@ def update_Product(request,id):
         form=fill_form(request,product)
         
 
-    return render(request, "productDetail.html", {'form': form})
+    return render(request, "Seller/productDetail.html", {'form': form})
 
 
 @login_required
