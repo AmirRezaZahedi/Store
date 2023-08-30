@@ -29,9 +29,20 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Log out</a>
                 </li>
+                {% endif %} {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'products' %}">store</a>
+                </li>
                 {% endif %}
             </ul>
         </div>
     </nav>
 </div>
+
+{% block content2 %}
+
 {% endblock %}
+
+{% endblock %}
+
+

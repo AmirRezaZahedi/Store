@@ -3,11 +3,14 @@ from django.contrib.auth.decorators import login_required
 from .models import Cart 
 from Seller.models import Product , productField
 from Accounts.models import User, Seller
-from .forms import filterform
+from .forms import filterform,orderform
 
 def query_by_filter(cd,request):
+
     products =Product.objects.all()
     return products
+
+
 
 def customer_profile(request):
     
@@ -15,7 +18,7 @@ def customer_profile(request):
 
 def home(request):
     
-    return render(request,"home.html")
+    return render(request,"customer/home.html")
 
 
 def show_products(request):
@@ -24,10 +27,10 @@ def show_products(request):
         form = filterform(request.POST)
 
         if form.is_valid():
-         
-            cd = form.cleaned_data
 
+            cd = form.cleaned_data
             products=query_by_filter(cd,request)
+
             return render(request,"customer/products.html",{'products':products})
     else:
         cd=[]
@@ -39,13 +42,18 @@ def show_products(request):
 @login_required
 def product_detail(request,id):
 
+    form=orderform()
     product=Product.objects.get(id=id)
     
-    return render(request,"customer/detail.html",{'product':product})
+    return render(request,"customer/detail.html",{'product':product},{'form':form})
 
 
 @login_required
-def order(request,id,number):
+def order(request,id):
+
+    form = orderform(request.POST)
+    cd = form.cleaned_data
+    number=cd['number']
 
     product=Product.objects.get(id=id)
     cart=Cart()

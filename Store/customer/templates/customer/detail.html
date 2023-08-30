@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}create product{% endblock %}
+{% block additional_css %}
+<link rel="stylesheet"
+      type="text/css"
+      href="{% static '/Seller/productManager.css' %}" />
+{% endblock %}
+{% block content %}
+
+<div class="card">
+    <img src="{{ product.image }}"
+         class="card-image"
+         alt="{{ product.name }}" />
+    <h2 class="card-title">{{ product.name }}</h2>
+    <p class="card-price">Price: {{ product.price }}</p>
+    <p class="card-quantity">Quantity: {{ product.quantity }}</p>
+</div>
+
+<div class="form-container">
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        <a href="{% url 'order' product.id %}"><input type="submit" class="btn" value="order"></input></a>
+    </form>
+</div>
+{% endblock %}

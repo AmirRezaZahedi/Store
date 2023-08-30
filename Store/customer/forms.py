@@ -26,3 +26,7 @@ class filterform(forms.Form):
     price = forms.DecimalField(min_value=0)
     quantity = forms.IntegerField(min_value=0)
     collection = forms.ChoiceField(choices=CHOICES1)
+
+class orderform(forms.Form):
+    number = forms.IntegerField(min_value=0)
+    
