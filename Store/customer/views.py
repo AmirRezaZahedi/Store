@@ -6,15 +6,18 @@ from Accounts.models import User, Seller
 from .forms import filterform
 
 def query_by_filter(cd,request):
-    products =request.user.seller.product_set.all()
+    products =Product.objects.all()
     return products
 
 def customer_profile(request):
-    pass
-def home(request):
-    pass
+    
+    return render(request, "customerProfile.html")
 
-@login_required
+def home(request):
+    
+    return render(request,"home.html")
+
+
 def show_products(request):
 
     if request.method == 'POST':
@@ -25,12 +28,12 @@ def show_products(request):
             cd = form.cleaned_data
 
             products=query_by_filter(cd,request)
-            return render(request,"Seller/productManager.html",{'products':products})
-    
-    cd=[]
-    products=query_by_filter(cd,request)
+            return render(request,"customer/products.html",{'products':products})
+    else:
+        cd=[]
+        products=query_by_filter(cd,request)
 
-    return render(request,"Seller/productManager.html",{'products':products})
+    return render(request,"customer/products.html",{'products':products})
 
 
 @login_required
@@ -38,7 +41,7 @@ def product_detail(request,id):
 
     product=Product.objects.get(id=id)
     
-    return render(request,"Seller/productManager.html",{'product':product})
+    return render(request,"customer/detail.html",{'product':product})
 
 
 @login_required
@@ -49,5 +52,4 @@ def order(request,id,number):
     cart.customer=request.user.customer
     cart.product=product
     cart.number=number
-    
-    return redirect('productManager')
+    cart.save()
