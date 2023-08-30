@@ -62,3 +62,7 @@ def order(request,id):
     cart.product=product
     cart.number=number
     cart.save()
+
+def show_cart(request):
+    cart = request.user.customer.cart
+    return render(request, "customer/cart.html", {'cart': cart})

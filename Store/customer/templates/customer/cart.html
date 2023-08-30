@@ -1,0 +1,25 @@
+{% extends 'customer/baseCustomer.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content2 %}
+<h1>Your Cart</h1>
+    
+{% if cart %}
+<ul>
+    {% for item in cart %}
+        <li>
+            <h2>{{ item.product.name }}</h2>
+            <p>Price: {{ item.product.price }}</p>
+            <p>Quantity: {{ item.quantity }}</p>
+            <p>Quantity: {{ item.product_quantity }}</p>
+        </li>
+    {% endfor %}
+</ul>
+<p>Total: {{ total_price }}</p>
+<a href="{% url 'checkout' %}" class="btn">Checkout</a>
+{% else %}
+<p>Your cart is empty.</p>
+{% endif %}
+
+{% endblock %}
