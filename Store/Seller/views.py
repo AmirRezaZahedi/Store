@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .models import Product, productField
 from Accounts.models import User, Seller
+from customer.models import Order 
 from .forms import product_detailform
 
 
@@ -94,4 +95,10 @@ def delete_product(request,id):
     return redirect('productManager')
     
 
+@login_required
+def show_orders(request):
+
+    orders =request.user.seller.order_set.all()
+
+    return render(request, "Seller/orders.html", {'orders': orders})
         

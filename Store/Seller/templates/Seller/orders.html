@@ -1,0 +1,23 @@
+{% extends 'Seller/baseSeller.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content2 %}
+<h1>Your Cart</h1>
+
+{% if orders %}
+<ul>
+    {% for order in orders %}
+    <li>
+        <h2>{{ order.product.name }}</h2>
+        <p>Price: {{ order.product.price }}</p>
+        <p>Quantity: {{ order.quantity }}</p>
+    </li>
+    {% endfor %}
+</ul>
+
+{% else %}
+<p>Your orders is empty.</p>
+{% endif %}
+
+{% endblock %}

@@ -16,10 +16,10 @@
 </div>
 
 <div class="form-container">
-    <form action="" method="POST" enctype="multipart/form-data">
+    <form action="{% url 'order' product.id %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{form.as_p}}
-        <input type="submit" class="btn" href="{% url 'order' product.id %}" value="order"></input>
+        <input type="submit" class="btn" value="order"></input>
     </form>
 </div>
 {% endblock %}

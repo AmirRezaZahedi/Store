@@ -27,6 +27,11 @@ class filterform(forms.Form):
     quantity = forms.IntegerField(min_value=0)
     collection = forms.ChoiceField(choices=CHOICES1)
 
+class selectform(forms.Form):
+    quantity = forms.IntegerField(min_value=0)
+
+
 class orderform(forms.Form):
-    number = forms.IntegerField(min_value=0)
+    quantity = forms.IntegerField(min_value=0)
+
     
