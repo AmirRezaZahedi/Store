@@ -1,11 +1,17 @@
 .card-container {
     display: flex;
-    flex-wrap: wrap;
     gap: 20px;
-    justify-content: center;
     padding: 20px;
+    overflow-x: auto;
+    margin-left: 120px;
+    margin-right: 120px;
   }
   
+
+.card-container::-webkit-scrollbar {
+    display: none;
+  
+}
 
 .card {
     width: 250px;
@@ -58,4 +64,6 @@
     text-decoration: none;
     color: inherit;
   }
+
+
   

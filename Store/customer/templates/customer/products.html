@@ -22,4 +22,21 @@
     </a>
     {% endfor %}
 </div>
+<input type="submit" id="prebtn" value="pre"></input>
+<input type="submit" id="nxtbtn" value="next"></input>
+<script>
+    let scroll = document.querySelector(".card-container");
+    let back = document.getElementById("prebtn");
+    let next = document.getElementById("nxtbtn");
+
+    next.addEventListener("click", () => {
+        scroll.style.scrollBehavior = "smooth";
+        scroll.scrollLeft += 290;
+    });
+
+    back.addEventListener("click", () => {
+        scroll.style.scrollBehavior = "smooth";
+        scroll.scrollLeft -= 290;
+    });
+</script>
 {% endblock %}
