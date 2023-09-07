@@ -12,17 +12,17 @@
     {% for product in products %}
     <a href="{% url 'productDetail' product.id %}">
         <div class="card">
-            <img src="{{ product.image }}"
+            <img src="{{ product.image.url }}"
                  class="card-image"
                  alt="{{ product.name }}" />
-            <h2 class="card-title">{{ product.name }}</h2>
+            <h1 class="card-title">{{ product.name }}</h2>
             <p class="card-price">Price: {{ product.price }}</p>
             <p class="card-quantity">Quantity: {{ product.quantity }}</p>
         </div>
     </a>
     {% endfor %}
 </div>
-<input type="submit" id="prebtn" value="pre"></input>
+<input type="submit" id="prebtn" value="back"></input>
 <input type="submit" id="nxtbtn" value="next"></input>
 <script>
     let scroll = document.querySelector(".card-container");

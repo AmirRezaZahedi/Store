@@ -1,3 +1,7 @@
+body {
+    background-color: #b9b2b2;
+
+}
 .card-container {
     display: flex;
     gap: 20px;
@@ -14,13 +18,13 @@
 }
 
 .card {
-    width: 250px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
-  }
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  width: 500px;
+  height: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
   
 .card:hover {
     transform: translateY(-5px);
@@ -42,13 +46,12 @@
   }
   
 .card-price {
-    font-size: 16px;
-    color: #f39c12;
-    padding: 0 10px;
+  color: grey;
+  font-size: 10px;
   }
   
 .card-quantity {
-    font-size: 14px;
+    font-size: 8px;
     color: #666;
     padding: 0 10px;
     margin-bottom: 10px;
