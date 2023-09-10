@@ -1,24 +1,34 @@
 {% extends 'customer/baseCustomer.html' %}
-
+{% load static %}
 {% block title %}Profile{% endblock %}
-
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{% static '/customer/cart.css' %}">
+{% endblock %}
 {% block content2 %}
 <h1>Your Cart</h1>
     
 {% if cart %}
-<ul>
+<ul class="cart">
     {% for item in cart %}
-        <li>
-            <h2>{{ item.product.name }}</h2>
-            <p>Price: {{ item.product.price }}</p>
-            <p>Quantity: {{ item.quantity }}</p>
+        <li class="cart-item">
+            <div class="item-info">
+                <h2>{{ item.product.name }}</h2>
+                <p class="item-price">Price: {{ item.product.price }}</p>
+                <p class="item-quantity">Quantity: {{ item.quantity }}</p>
+            </div>
+            <div class="item-image-container">
+                <img src="{{ item.product.image.url }}" class="item-image">
+            </div>
         </li>
     {% endfor %}
 </ul>
-<p>Total: {{ total_price }}</p>
-<a href="{% url 'order' %}" class="btn">Checkout</a>
-{% else %}
-<p>Your cart is empty.</p>
+<div class="total-box">
+    <p class="total">Total: {{ total_price }}</p>
+    <a href="{% url 'order' %}" class="btn checkout">Checkout</a>
+</div>
+
+<p class="empty-cart">Your cart is empty.</p>
+
 {% endif %}
 
 {% endblock %}

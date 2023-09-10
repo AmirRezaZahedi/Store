@@ -11,8 +11,6 @@ def query_by_filter(cd,request):
     products =Product.objects.all()
     return products
 
-
-
 def customer_profile(request):
     
     return render(request, "customerProfile.html")
@@ -74,8 +72,10 @@ def select(request,id):
 def show_cart(request):
 
     cart =request.user.customer.cart_set.all()
-
-    return render(request, "customer/cart.html", {'cart': cart})
+    total_price = 0
+    for item in cart:
+        total_price = total_price + item.product.price * item.quantity
+    return render(request, "customer/cart.html", {'cart': cart, 'total_price': total_price})
 
 
 @login_required
