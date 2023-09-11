@@ -14,7 +14,19 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField()
     product_quantity = models.IntegerField(choices=CHOICES)
 
+
 class productField(models.Model):
+
     fieldName = models.CharField(max_length=20)
+    
+class productValue(models.Model):
+
     fieldValue = models.CharField(max_length=50)
+    
+class productDetail(models.Model):
+
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    productfield = models.ForeignKey(productField, on_delete=models.CASCADE)
+    productValue = models.ForeignKey(productValue, on_delete=models.CASCADE)
+
+
