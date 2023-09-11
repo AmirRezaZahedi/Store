@@ -1,9 +1,9 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from .models import Cart , Order
+from .models import Cart , Order, Address
 from Seller.models import Product , productField
 from Accounts.models import User, Seller
-from .forms import filterform,selectform,orderform
+from .forms import filterform,selectform,orderform,addressform
 from django.contrib import messages
 
 def query_by_filter(cd,request):
@@ -86,17 +86,24 @@ def update_cart(request, id):
         cart_item.save()
     return redirect('cart')
 
-@login_required
-def order(request):
 
-    cart =request.user.customer.cart_set.all()
+def order(cart,address):
+
+    
     for item in cart:
+        
+        if item.product.quantity-item.quantity >= 0 :
+            item.product.quantity-=item.quantity
+            item.product.save()
+
         order=Order()
         order.customer=item.customer
         order.product=item.product
         order.quantity=item.quantity
         order.seller=item.product.seller
+        order.address=address
         order.save()
+
         cart.delete()
 
     return redirect('cart')
@@ -111,11 +118,36 @@ def show_orders(request):
 
 
 
+
 @login_required
 def delete_cart(request, id):
 
     cart = Cart.objects.get(id=id)
     cart.delete()
     return redirect('cart')
+
+@login_required
+def fill_address(request):
+    
+    if request.method == 'POST':
+        
+        form = addressform(request.POST)
+        if form.is_valid():
+            
+            cd = form.cleaned_data
+            addressUser = Address()
+            addressUser.city = cd["city"]
+            addressUser.address = cd["address"]
+            addressUser.postcode = cd["postcode"]
+            addressUser.save()
+            cart =request.user.customer.cart_set.all()
+            order(cart,addressUser)
+            return redirect('customerOrders')
+    else:
+        form = addressform()
+
+    return render(request, "customer/address.html", {'form':form})
+
+
 
 
