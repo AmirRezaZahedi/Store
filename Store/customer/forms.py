@@ -34,4 +34,7 @@ class selectform(forms.Form):
 class orderform(forms.Form):
     quantity = forms.IntegerField(min_value=0)
 
-    
+class addressform(forms.Form):
+    city = forms.CharField(max_length=20)
+    address = forms.CharField(widget=forms.Textarea)
+    postcode = forms.IntegerField()
