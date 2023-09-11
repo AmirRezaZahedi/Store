@@ -91,6 +91,11 @@ def order(cart,address):
 
     
     for item in cart:
+        
+        if item.product.quantity-item.quantity >= 0 :
+            item.product.quantity-=item.quantity
+            item.product.save()
+
         order=Order()
         order.customer=item.customer
         order.product=item.product
@@ -98,6 +103,7 @@ def order(cart,address):
         order.seller=item.product.seller
         order.address=address
         order.save()
+
         cart.delete()
 
     return redirect('cart')
