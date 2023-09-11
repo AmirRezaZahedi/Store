@@ -100,3 +100,23 @@ def show_orders(request):
     orders =request.user.customer.order_set.all()
 
     return render(request, "customer/orders.html", {'orders': orders})
+
+@login_required
+def update_cart(request, id):
+
+    form = selectform(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        cart = Cart.objects.get(id)
+        cart["quantity"] = cd["quantity"]
+        cart.save()
+        return redirect('cart')
+
+@login_required
+def delete_cart(request, id):
+
+    cart = Cart.objects.get(id=id)
+    cart.delete()
+    return redirect('cart')
+
+

@@ -18,6 +18,7 @@
             </div>
             <div class="item-image-container">
                 <img src="{{ item.product.image.url }}" class="item-image">
+                <a href="{% url 'deleteCart' item.product.id %}"><input type="submit" class="btn" value="delete"></input></a>
             </div>
         </li>
     {% endfor %}
