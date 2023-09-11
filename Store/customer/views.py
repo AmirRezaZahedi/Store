@@ -71,9 +71,6 @@ def select(request,id):
 @login_required
 def show_cart(request):
 
-    form = selectform()
-    form.initial['quantity']=cart.quantity
-
     cart =request.user.customer.cart_set.all()
     total_price = 0
     forms=[]
