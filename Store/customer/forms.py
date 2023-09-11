@@ -1,5 +1,5 @@
 ﻿from django import forms
-
+from .models import Cart
 
 class filterform(forms.Form):
 
@@ -26,10 +26,6 @@ class filterform(forms.Form):
     price = forms.DecimalField(min_value=0)
     quantity = forms.IntegerField(min_value=0)
     collection = forms.ChoiceField(choices=CHOICES1)
-
-class selectform(forms.Form):
-    quantity = forms.IntegerField(min_value=0)
-
 
 class orderform(forms.Form):
     quantity = forms.IntegerField(min_value=0)

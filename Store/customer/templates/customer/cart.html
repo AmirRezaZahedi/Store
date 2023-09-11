@@ -7,37 +7,36 @@
 {% block content2 %}
 <h1>Your Cart</h1>
     
-{% if cart %}
+
 <ul class="cart">
-    {% for item,form  in cart,forms %}
-        <li class="cart-item">
-            <div class="item-info">
-                <h2>{{ item.product.name }}</h2>
-                <p class="item-price">Price: {{ item.product.price }}</p>
-
-                <div class="form-container">
-                    <form action="{% url 'select' product.id %}" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{form.as_p}}
-                        <input type="submit" class="btn" value="order"></input>
-                    </form>
-                </div>
-
-            </div>
-            <div class="item-image-container">
-                <img src="{{ item.product.image.url }}" class="item-image">
-                <a href="{% url 'deleteCart' item.product.id %}"><input type="submit" class="btn" value="delete"></input></a>
-            </div>
-        </li>
+    {% for item in cart %}
+      <li>
+        <div class="product-info">
+            <img src="{{ item.product.image.url }}"class="card-image"alt="{{ item.product.name }}"  width="150" height="100"/>
+          <h3>{{ item.product.name }}</h3>
+          <p>Price: {{ item.product.price }}</p>
+        </div>
+        <div class="quantity-form">
+          <form method="post" action="{% url 'update_cart' item.id %}">
+            {% csrf_token %}
+            <label for="quantity">Quantity:</label>
+            <input type="number" name="quantity" id="quantity" value="{{ item.quantity }}">
+            <input type="submit" value="Update">
+          </form>
+        </div>
+      </li>
     {% endfor %}
-</ul>
+  </ul>
+
+
+
 <div class="total-box">
     <p class="total">Total: {{ total_price }}</p>
     <a href="{% url 'order' %}" class="btn checkout">Checkout</a>
 </div>
 
-<p class="empty-cart">Your cart is empty.</p>
 
-{% endif %}
+
+
 
 {% endblock %}

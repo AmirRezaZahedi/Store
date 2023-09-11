@@ -64,27 +64,27 @@ def select(request,id):
         cart.quantity=quantity
         cart.save()
 
-        messages.success(request, 'successfully', 'success')
         return redirect('products')
     
     
 @login_required
 def show_cart(request):
 
-    form = selectform()
-    form.initial['quantity']=cart.quantity
-
     cart =request.user.customer.cart_set.all()
     total_price = 0
-    forms=[]
     for item in cart:
-        form = selectform()
-        form.initial['quantity']=item.quantity
-        forms.append(form)
         total_price = total_price + item.product.price * item.quantity
+    return render(request, "customer/cart.html", {'cart': cart, 'total_price': total_price})
 
-    return render(request, "customer/cart.html", {'forms':forms,'cart': cart, 'total_price': total_price})
 
+@login_required
+def update_cart(request, id):
+    if request.method == 'POST':
+        quantity = int(request.POST['quantity'])
+        cart_item = Cart.objects.get(id=id)
+        cart_item.quantity = quantity
+        cart_item.save()
+    return redirect('cart')
 
 @login_required
 def order(request):
@@ -109,16 +109,7 @@ def show_orders(request):
 
     return render(request, "customer/orders.html", {'orders': orders})
 
-@login_required
-def update_cart(request, id):
 
-    form = selectform(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        cart = Cart.objects.get(id)
-        cart["quantity"] = cd["quantity"]
-        cart.save()
-        return redirect('cart')
 
 @login_required
 def delete_cart(request, id):
