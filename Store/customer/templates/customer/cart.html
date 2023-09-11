@@ -9,12 +9,20 @@
     
 {% if cart %}
 <ul class="cart">
-    {% for item in cart %}
+    {% for item,form  in cart,forms %}
         <li class="cart-item">
             <div class="item-info">
                 <h2>{{ item.product.name }}</h2>
                 <p class="item-price">Price: {{ item.product.price }}</p>
-                <p class="item-quantity">Quantity: {{ item.quantity }}</p>
+
+                <div class="form-container">
+                    <form action="{% url 'select' product.id %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <input type="submit" class="btn" value="order"></input>
+                    </form>
+                </div>
+
             </div>
             <div class="item-image-container">
                 <img src="{{ item.product.image.url }}" class="item-image">
