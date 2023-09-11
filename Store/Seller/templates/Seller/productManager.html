@@ -1,8 +1,10 @@
-{% extends 'Seller/baseSeller.html' %} {% load static %} {% block title %}Profile
-{%endblock %} {% block additional_css %}
+{% extends 'Seller/baseSeller.html' %}
+{% load static %} 
+{% block title %}Profile{%endblock %} 
+{% block additional_css %}
 <link rel="stylesheet"
       type="text/css"
-      href="{% static '/Seller/productManager.css' %}" />
+      href="{% static '/Seller/productManager.css' %}"  />
 {% endblock %}
 {% block content2%}
 
@@ -10,23 +12,27 @@
     {% for product in products %}
 
     <div class="card">
-        <img src="{{ product.image.url }}"
-             class="card-image"
-             alt="{{ product.name }}" />
-        <h2 class="card-title">{{ product.name }}</h2>
-        <p class="card-price">Price: {{ product.price }}</p>
-        <p class="card-quantity">Quantity: {{ product.quantity }}</p>
-        <a href="{% url 'productUpdate' product.id %}"><input type="submit" class="btn" value="update"></input></a>
-        <a href="{% url 'productDelete' product.id %}"><input type="submit" class="btn" value="delete"></input></a>
+        <a href="{% url 'productUpdate' product.id %}">
+            <img src="{{ product.image.url }}"
+                 class="card-image"
+                 alt="{{ product.name }}" />
+            <h2 class="card-title">{{ product.name }}</h2>
+            <p class="card-price">Price: {{ product.price }}</p>
+            <p class="card-quantity">Quantity: {{ product.quantity }}</p>
+        </a>
+        <a href="{% url 'productDelete' product.id %}">
+            <input type="submit" class="btn" value="delete"></input>
+        </a>
     </div>
+    
 
     {% endfor %}
 </div>
 
 {% if user.is_authenticated %}
-<li class="nav-item active">
+<div class="nav-item active">
     <a href="{% url 'productCreate' %}" class="nav-link">new product</a>
-</li>
+</div>
 {% endif %}
 
 
