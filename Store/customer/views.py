@@ -71,11 +71,19 @@ def select(request,id):
 @login_required
 def show_cart(request):
 
+    form = selectform()
+    form.initial['quantity']=cart.quantity
+
     cart =request.user.customer.cart_set.all()
     total_price = 0
+    forms=[]
     for item in cart:
+        form = selectform()
+        form.initial['quantity']=item.quantity
+        forms.append(form)
         total_price = total_price + item.product.price * item.quantity
-    return render(request, "customer/cart.html", {'cart': cart, 'total_price': total_price})
+
+    return render(request, "customer/cart.html", {'forms':forms,'cart': cart, 'total_price': total_price})
 
 
 
