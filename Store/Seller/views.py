@@ -1,9 +1,9 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from .models import Product,staticFeature,dynamicFeature
+from .models import Product,staticFeature,intDynamicFeature,charDynamicFeature,ImageDynamicFeature
 from Accounts.models import User, Seller
 from customer.models import Order 
-from .forms import product_detailform
+from .forms import *
 
 
 def update_product(cd,product):

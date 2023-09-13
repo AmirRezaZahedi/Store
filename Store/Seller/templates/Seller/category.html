@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}create product{% endblock %}
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{% static '/Seller/productDetail.css' %}">
+{% endblock %}
+{% block content %}
+{%for form in forms}
+    <div class="form-container">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" class="btn" value="submit product"></input>
+        </form>
+    </div>
+{% endfor %}
+{% end block%}
