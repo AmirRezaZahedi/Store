@@ -22,9 +22,22 @@ class staticFeature(models.Model):
     childfeatures = models.ManyToManyField('self')
     
     
-class dynamicFeature(models.Model):
+class intDynamicFeature(models.Model):
+
+    featureNumber = models.IntegerField()
+    products = models.ManyToManyField(Product)
+    baseFeature = models.ForeignKey(staticFeature, on_delete=models.CASCADE)
+
+
+class charDynamicFeature(models.Model):
 
     featureName = models.CharField(max_length=20)
+    products = models.ManyToManyField(Product)
+    baseFeature = models.ForeignKey(staticFeature, on_delete=models.CASCADE)
+
+class ImageDynamicFeature(models.Model):
+
+    featureImage = models.CharField(max_length=20)
     products = models.ManyToManyField(Product)
     baseFeature = models.ForeignKey(staticFeature, on_delete=models.CASCADE)
 

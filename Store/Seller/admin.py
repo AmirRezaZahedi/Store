@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Product, staticFeature,dynamicFeature
+from .models import Product, staticFeature,charDynamicFeature,ImageDynamicFeature,intDynamicFeature
 # Register your models here.
 
-admin.site.register(Product)
-admin.site.register(staticFeature)
-admin.site.register(dynamicFeature)
+admin.site.register(charDynamicFeature)
+admin.site.register(ImageDynamicFeature)
+admin.site.register(intDynamicFeature)

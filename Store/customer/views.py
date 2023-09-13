@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .models import Cart , Order, Address
-from Seller.models import Product , staticFeature,dynamicFeature
+from Seller.models import Product , staticFeature,intDynamicFeature,ImageDynamicFeature,charDynamicFeature
 from Accounts.models import User, Seller
 from .forms import filterform,selectform,orderform,addressform
 from django.contrib import messages
