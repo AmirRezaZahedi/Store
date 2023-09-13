@@ -17,6 +17,7 @@ class product_detailform(forms.Form):
     product_quantity = forms.ChoiceField(choices=CHOICES)
 
 
+
 def dynamic_product_form(intFields, charField, imageField):
     dynamic_fields = {}
 
@@ -28,7 +29,7 @@ def dynamic_product_form(intFields, charField, imageField):
 
     return dynamic_form_class
 
- 
+
 
 def dynamic_category_form(category):
     dynamic_fields = {}
@@ -36,7 +37,6 @@ def dynamic_category_form(category):
     CHOICES=((i,category[i])  for i in range(len(category)))
     
     dynamic_fields.update({category: forms.IntegerField(choices=CHOICES) })
-    
 
     dynamic_form_class = type('DynamicCategoryForm', dynamic_fields)
 
