@@ -15,18 +15,17 @@ class Product(models.Model):
     product_quantity = models.IntegerField(choices=CHOICES)
 
 
-class productField(models.Model):
+class staticFeature(models.Model):
 
-    fieldName = models.CharField(max_length=20)
+    featureName = models.CharField(max_length=20)
+    products = models.ManyToManyField(Product)
+    childfeatures = models.ManyToManyField('self')
     
-class productValue(models.Model):
-
-    fieldValue = models.CharField(max_length=50)
     
-class productDetail(models.Model):
+class dynamicFeature(models.Model):
 
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    productfield = models.ForeignKey(productField, on_delete=models.CASCADE)
-    productValue = models.ForeignKey(productValue, on_delete=models.CASCADE)
+    featureName = models.CharField(max_length=20)
+    products = models.ManyToManyField(Product)
+    baseFeature = models.ForeignKey(staticFeature, on_delete=models.CASCADE)
 
 

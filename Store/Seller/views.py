@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from .models import Product, productField
+from .models import Product,staticFeature,dynamicFeature
 from Accounts.models import User, Seller
 from customer.models import Order 
 from .forms import product_detailform
