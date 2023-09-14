@@ -9,5 +9,6 @@ urlpatterns = [
     path('product-manager/delete/<int:id>', views.delete_product, name='productDelete'),
     path('product-manager/create/selectcategory',views.send_productform, name='sendproductform'),
     path('product-manager/create/getcategory',views.get_category, name='getcategory'),
+    path('product-manager/create/getradio',views.get_radio, name='getradio'),
     path('orders/', views.show_orders, name='sellerOrders'),
 ]

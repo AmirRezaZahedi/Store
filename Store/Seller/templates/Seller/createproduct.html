@@ -5,7 +5,8 @@
 <link rel="stylesheet" type="text/css" href="{% static '/Seller/productDetail.css' %}">
 {% endblock %}
 {% block content %}
+    <input type="hidden" id="csrf-token" value="{% csrf_token %}">
     <ul id="tree"></ul>
-    <script src="../../static/Seller/category.js"></script>
-    <script></script>
+    <script src="../../static/Seller/showcategory.js"></script>
+    
 {% endblock %}

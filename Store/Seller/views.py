@@ -119,7 +119,28 @@ def get_category(request):
     ]
     return JsonResponse(my_arr, safe=False)
 
-  
+from django.http import JsonResponse
+
+@login_required
+def get_radio(request):
+    if request.method == 'POST':
+        try:
+            
+            selected_value = request.POST.get('selectedValue')
+            
+
+            print(f"Selected Value: {selected_value}")
+            
+
+            response_data = {
+                'message': 'Data received successfully'
+            }
+            return JsonResponse(response_data)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+
   
   
    
