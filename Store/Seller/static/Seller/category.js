@@ -1,3 +1,29 @@
+const treeContainer = document.getElementById("tree");
+
+function getcategory() {
+    const url = 'http://127.0.0.1:8000/product-manager/create/getcategory';
+
+    
+    fetch(url)
+      .then(response => {
+        
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        console.log(response);
+        return response.json();
+      })
+      .then(data => {
+        createTree(data, treeContainer)
+        //console.log(data);
+      })
+      .catch(error => {
+        
+        console.error('There was a problem with the fetch operation:', error);
+      });
+
+
+}
 const my_arr = [
   {
       "product": [
@@ -8,7 +34,7 @@ const my_arr = [
   }
 ];
 
-const treeContainer = document.getElementById("tree");
+
 
 function createTree(array, parent) {
   for (const data of array) {
@@ -50,4 +76,4 @@ function createTree(array, parent) {
   }
 }
 
-createTree(my_arr, treeContainer);
+//createTree(my_arr, treeContainer);

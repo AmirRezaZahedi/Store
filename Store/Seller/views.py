@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Product,staticFeature,intDynamicFeature,charDynamicFeature,ImageDynamicFeature
 from Accounts.models import User, Seller
 from customer.models import Order 
+from django.http import JsonResponse
 from .forms import *
 
 
@@ -61,9 +62,9 @@ def create_product(request):
             return redirect('productManager')
 
     else:
-        form = product_detailform()
+        pass
     
-    return render(request, "Seller/productDetail.html", {'form': form})
+    return render(request, "Seller/createproduct.html")
 
 
 @login_required
@@ -101,4 +102,24 @@ def show_orders(request):
     orders =request.user.seller.order_set.all()
 
     return render(request, "Seller/orders.html", {'orders': orders})
+
+
+def send_productform(request):
+    pass
         
+def get_category(request):
+    my_arr = [
+        {
+            "product": [
+                {"digital": ["mobile", "TV"]},
+                "clothes",
+                {"drink": ["water", "wine", "soda"]}
+            ]
+        }
+    ]
+    return JsonResponse(my_arr, safe=False)
+
+  
+  
+  
+   
