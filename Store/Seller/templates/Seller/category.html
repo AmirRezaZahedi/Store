@@ -5,13 +5,6 @@
 <link rel="stylesheet" type="text/css" href="{% static '/Seller/productDetail.css' %}">
 {% endblock %}
 {% block content %}
-{%for form in forms}
-    <div class="form-container">
-        <form action="" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{form.as_p}}
-            <input type="submit" class="btn" value="submit product"></input>
-        </form>
-    </div>
-{% endfor %}
+    <ul id="tree"></ul>
+    <script src="/Seller/static/Seller/category.js"></script>
 {% end block%}
