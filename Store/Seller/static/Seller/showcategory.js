@@ -1,3 +1,5 @@
+//import { sendSelectedValueToServer } from './getradio.js';
+import { sendSelectedValueToServer } from './getradio.js'
 const treeContainer = document.getElementById("tree");
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -17,8 +19,6 @@ function getcategory() {
       .then(data => {
         
         createTree(data, treeContainer);
-        addRadioButtonClass();
-        runSecondScript();
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
@@ -33,12 +33,18 @@ function createTree(array, parent) {
       const radioInput = document.createElement("input");
       radioInput.type = "radio";
       radioInput.name = "myRadioGroup";
+      radioInput.value = data; // Set the value of the radio button
 
       const radioLabel = document.createTextNode(data);
 
       const radioLabelElement = document.createElement("label");
       radioLabelElement.appendChild(radioInput);
       radioLabelElement.appendChild(radioLabel);
+
+      // Add a click event listener to the radio button
+      radioInput.addEventListener("click", function () {
+        sendSelectedValueToServer(data); // Call a function to send the value to the server
+      });
 
       sublist.appendChild(radioLabelElement);
       parent.appendChild(sublist);
@@ -52,50 +58,4 @@ function createTree(array, parent) {
     }
   }
 }
-
-function addRadioButtonClass() {
-  const radioButtons = document.querySelectorAll("input[type='radio']");
-  radioButtons.forEach(radio => {
-    radio.classList.add("radio-button");
-  });
-}
-function runSecondScript() {
-  const radioButtons = document.querySelectorAll(".radio-button");
-  radioButtons.forEach(radio => {
-    radio.addEventListener("click", function() {
-      if (radio.checked) {
-        const sendData = {
-          selectedValue: radio.value 
-        };
-
-        const url = 'http://127.0.0.1:8000/seller/product-manager/create/getradio';
-
-
-        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-
-        fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken 
-          },
-          body: JSON.stringify(sendData) 
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log(data);
-        })
-        .catch(error => {
-          console.error('There was a problem with the fetch operation:', error);
-        });
-      }
-    });
-  });
-}
-
 

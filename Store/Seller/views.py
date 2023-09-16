@@ -5,7 +5,7 @@ from Accounts.models import User, Seller
 from customer.models import Order 
 from django.http import JsonResponse
 from .forms import *
-
+import json
 
 def update_product(cd,product):
     # Updta a new product with provided data
@@ -123,23 +123,22 @@ from django.http import JsonResponse
 
 @login_required
 def get_radio(request):
+
     if request.method == 'POST':
         try:
+            data = json.loads(request.body.decode('utf-8'))  # Parse JSON data from request body
+            selected_value = data.get('selectedValue')
             
-            selected_value = request.POST.get('selectedValue')
-            
-
-            print(f"Selected Value: {selected_value}")
-            
-
-            response_data = {
-                'message': 'Data received successfully'
-            }
+            response_data = {'message': 'Value received and processed successfully'}
+            print(selected_value)
             return JsonResponse(response_data)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
+        except json.JSONDecodeError:
+            response_data = {'error': 'Invalid JSON data'}
+            return JsonResponse(response_data, status=400)  # Return a 400 Bad Request status for invalid JSON
     else:
-        return JsonResponse({'error': 'Invalid request method'}, status=405)
+        # Handle GET requests or other methods as needed
+        response_data = {'error': 'Invalid request method'}
+        return JsonResponse(response_data, status=400)  # Return a 400 Bad Request status for invalid methods
 
   
   

@@ -5,8 +5,9 @@
 <link rel="stylesheet" type="text/css" href="{% static '/Seller/productDetail.css' %}">
 {% endblock %}
 {% block content %}
-    <input type="hidden" id="csrf-token" value="{% csrf_token %}">
+    <script>
+        const csrfToken = "{{ csrf_token }}";
+    </script>
     <ul id="tree"></ul>
-    <script src="../../static/Seller/showcategory.js"></script>
-    
+    <script type="module" src="../../static/Seller/showcategory.js" defer></script>
 {% endblock %}
