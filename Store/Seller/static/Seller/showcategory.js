@@ -1,5 +1,6 @@
 
-import { sendSelectedValueToServer } from './getradiO.js'
+//import { sendSelectedValueToServer } from './Getradio.js'
+import { sendSelectedValueToServer } from "./Getradio.js";
 const treeContainer = document.getElementById("tree");
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -8,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function getcategory() {
     const url = 'http://127.0.0.1:8000/seller/product-manager/create/sendcategory';
-
+    console.log(url);
     fetch(url)
       .then(response => {
         if (!response.ok) {

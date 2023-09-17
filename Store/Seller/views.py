@@ -126,7 +126,6 @@ def get_category(request):
             data = json.loads(request.body.decode('utf-8'))  # Parse JSON data from request body
             selectedCategory = data.get('selectedCategory')
             get_fields(selectedCategory)
-            print("sSSSSSSSSSSSSSSSSSSSSS")
             response_data = {'error': 'Invalid JSON data'}
             print(selectedCategory)
             return JsonResponse(response_data)
