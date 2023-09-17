@@ -114,7 +114,10 @@ def set_category(request):
             charField=[]
             imageField=[]
             get_fields(selectedCategory)
+<<<<<<< HEAD
             form=dynamic_product_form(intFields, charField, imageField)
+=======
+>>>>>>> 289b7b09ebc5dcd08b7921f05c275629ecc43e51
             response_data = {'error': 'Invalid JSON data'}
             print(selectedCategory)
             return JsonResponse(response_data)

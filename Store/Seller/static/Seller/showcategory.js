@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+
+//import { sendSelectedValueToServer } from './Getradio.js'
+import { sendSelectedValueToServer } from "./Getradio.js";
+>>>>>>> 289b7b09ebc5dcd08b7921f05c275629ecc43e51
 const treeContainer = document.getElementById("tree");
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -5,7 +11,11 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function getcategory() {
+<<<<<<< HEAD
     const url = 'http://127.0.0.1:8000/seller/product-manager/create/category';
+=======
+    const url = 'http://127.0.0.1:8000/seller/product-manager/create/sendcategory';
+>>>>>>> 289b7b09ebc5dcd08b7921f05c275629ecc43e51
     console.log(url);
     fetch(url)
       .then(response => {
