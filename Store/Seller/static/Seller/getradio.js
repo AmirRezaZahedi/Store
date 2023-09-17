@@ -1,6 +1,6 @@
 export function sendSelectedValueToServer(selectedValue) {
-  const url = 'http://127.0.0.1:8000/seller/product-manager/create/getradio';
-  const dataToSend = { selectedValue: selectedValue };
+  const url = 'http://127.0.0.1:8000/seller/product-manager/create/getcategory';
+    const dataToSend = { selectedCategory: selectedValue };
 
   fetch(url, {
     method: 'POST',
