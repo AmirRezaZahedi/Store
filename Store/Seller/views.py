@@ -104,41 +104,33 @@ def create_product(request):
     
     return render(request, "Seller/createproduct.html")
         
-def send_category(request):
-    my_arr = [
-        {
-            "product": [
-                {"digital": [["mobile",4], ["TV",5]]},
-                ["clothes",2],
-                {"drink": [["water",6], ["wine",7], ["soda",8]]}
-            ]
-        }
-    ]
-    return JsonResponse(my_arr, safe=False)
-
-
-
-@login_required
-def get_category(request):
+def set_category(request):
 
     if request.method == 'POST':
         try:
             data = json.loads(request.body.decode('utf-8'))  # Parse JSON data from request body
             selectedCategory = data.get('selectedCategory')
+            intFields=[]
+            charField=[]
+            imageField=[]
             get_fields(selectedCategory)
-            print("sSSSSSSSSSSSSSSSSSSSSS")
+            form=dynamic_product_form(intFields, charField, imageField)
             response_data = {'error': 'Invalid JSON data'}
             print(selectedCategory)
             return JsonResponse(response_data)
-
+    
         except json.JSONDecodeError:
             response_data = {'error': 'Invalid JSON data'}
             return JsonResponse(response_data, status=400)  # Return a 400 Bad Request status for invalid JSON
     else:
-        # Handle GET requests or other methods as needed
-        response_data = {'error': 'Invalid request method'}
-        return JsonResponse(response_data, status=400)  # Return a 400 Bad Request status for invalid methods
-
-  
-  
-   
+    
+        my_arr = [
+            {
+                "product": [
+                    {"digital": [["mobile",4], ["TV",5]]},
+                    ["clothes",2],
+                    {"drink": [["water",6], ["wine",7], ["soda",8]]}
+                ]
+            }
+        ]
+        return JsonResponse(my_arr, safe=False)

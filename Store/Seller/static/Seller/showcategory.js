@@ -1,5 +1,3 @@
-
-import { sendSelectedValueToServer } from './getradiO.js'
 const treeContainer = document.getElementById("tree");
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -7,8 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function getcategory() {
-    const url = 'http://127.0.0.1:8000/seller/product-manager/create/sendcategory';
-
+    const url = 'http://127.0.0.1:8000/seller/product-manager/create/category';
+    console.log(url);
     fetch(url)
       .then(response => {
         if (!response.ok) {
@@ -62,4 +60,29 @@ function createTree(array, parent) {
     }
 }
 
+export function sendSelectedValueToServer(selectedValue) {
+    const url = 'http://127.0.0.1:8000/seller/product-manager/create/category';
+    const dataToSend = { selectedCategory: selectedValue };
 
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json', // Set the content type to JSON
+            'X-CSRFToken': csrfToken, // Include the CSRF token from the JavaScript variable
+        },
+        body: JSON.stringify(dataToSend), // Convert data to JSON
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+
+}
