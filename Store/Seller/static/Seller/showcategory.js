@@ -1,22 +1,23 @@
-<<<<<<< HEAD
-=======
-
-//import { sendSelectedValueToServer } from './Getradio.js'
-import { sendSelectedValueToServer } from "./Getradio.js";
->>>>>>> 289b7b09ebc5dcd08b7921f05c275629ecc43e51
 const treeContainer = document.getElementById("tree");
 
 document.addEventListener("DOMContentLoaded", function () {
   getcategory(); 
 });
+function make_form(formData, type, form) {
+  for (const field of formData) {
+
+    const input = document.createElement('input');
+    input.setAttribute('type', type);
+    input.setAttribute('name', field);
+    input.setAttribute("required", "required");
+    //input.setAttribute('value', formData[key]);
+    form.appendChild(input);
+  }
+}
 
 function getcategory() {
-<<<<<<< HEAD
+
     const url = 'http://127.0.0.1:8000/seller/product-manager/create/category';
-=======
-    const url = 'http://127.0.0.1:8000/seller/product-manager/create/sendcategory';
->>>>>>> 289b7b09ebc5dcd08b7921f05c275629ecc43e51
-    console.log(url);
     fetch(url)
       .then(response => {
         if (!response.ok) {
@@ -70,7 +71,7 @@ function createTree(array, parent) {
     }
 }
 
-export function sendSelectedValueToServer(selectedValue) {
+function sendSelectedValueToServer(selectedValue) {
     const url = 'http://127.0.0.1:8000/seller/product-manager/create/category';
     const dataToSend = { selectedCategory: selectedValue };
 
@@ -89,7 +90,34 @@ export function sendSelectedValueToServer(selectedValue) {
             return response.json();
         })
         .then(data => {
+            const int = data[0]
+            const char = data[1]
+            const img = data[2]
 
+            const formContainer = document.getElementById('form-container');
+            const previousForm = formContainer.querySelector('form');
+            if (previousForm) {
+                previousForm.remove();
+            }
+            const form = document.createElement('form');
+            form.action = '';
+            form.method = 'POST';
+            make_form(int, 'number', form);
+            make_form(char, 'text', form);
+            make_form(img, 'file', form);
+
+            const csrfTokenInput = document.createElement('input');
+            csrfTokenInput.type = 'hidden';
+            csrfTokenInput.name = 'csrfmiddlewaretoken'; 
+            csrfTokenInput.value = csrfToken;
+            
+            const submitButton = document.createElement('input');
+            submitButton.type = 'submit';
+            submitButton.value = 'Submit';
+
+            formContainer.appendChild(form);
+            form.appendChild(csrfTokenInput);
+            form.appendChild(submitButton);
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);

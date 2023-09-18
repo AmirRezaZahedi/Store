@@ -30,7 +30,10 @@ def fill_form(request,product):
     return form
 
 def get_fields(category):
-    pass
+    intFields=['age']
+    charField=['color']
+    imageField=['image']
+    return intFields, charField, imageField
 
 
 @login_required
@@ -87,12 +90,9 @@ def show_orders(request):
 
 @login_required
 def create_product(request):
+    print(1111111111111)
     if request.method == 'POST':
-        form = product_detailform(request.POST, request.FILES)
-
-        if form.is_valid():
-         
-            cd = form.cleaned_data
+            cd = []
             product=Product()
             product.seller = request.user.seller
             product = update_product(cd,product)
@@ -110,17 +110,14 @@ def set_category(request):
         try:
             data = json.loads(request.body.decode('utf-8'))  # Parse JSON data from request body
             selectedCategory = data.get('selectedCategory')
-            intFields=[]
-            charField=[]
-            imageField=[]
-            get_fields(selectedCategory)
-<<<<<<< HEAD
-            form=dynamic_product_form(intFields, charField, imageField)
-=======
->>>>>>> 289b7b09ebc5dcd08b7921f05c275629ecc43e51
+            intFields, charField, imageField = get_fields(selectedCategory)
+            inputFields = [intFields, charField, imageField]
+
+            #print(intFields)
+            #form=dynamic_product_form(intFields, charField, imageField)
             response_data = {'error': 'Invalid JSON data'}
             print(selectedCategory)
-            return JsonResponse(response_data)
+            return JsonResponse(inputFields, safe=False)
     
         except json.JSONDecodeError:
             response_data = {'error': 'Invalid JSON data'}
