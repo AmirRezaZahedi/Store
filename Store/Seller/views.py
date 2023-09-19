@@ -90,7 +90,7 @@ def show_orders(request):
 
 @login_required
 def create_product(request):
-    print(1111111111111)
+ 
     if request.method == 'POST':
             cd = []
             product=Product()
@@ -109,22 +109,22 @@ def set_category(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body.decode('utf-8'))  # Parse JSON data from request body
-            selectedCategory = data.get('selectedCategory')
-            intFields, charField, imageField = get_fields(selectedCategory)
+            category = data.get('selectedCategory')
+            intFields, charField, imageField = get_fields(category)
             inputFields = [intFields, charField, imageField]
 
-            #print(intFields)
-            #form=dynamic_product_form(intFields, charField, imageField)
-            response_data = {'error': 'Invalid JSON data'}
-            print(selectedCategory)
+            
+            
             return JsonResponse(inputFields, safe=False)
     
         except json.JSONDecodeError:
             response_data = {'error': 'Invalid JSON data'}
             return JsonResponse(response_data, status=400)  # Return a 400 Bad Request status for invalid JSON
     else:
+
+        
     
-        my_arr = [
+        categories = [
             {
                 "product": [
                     {"digital": [["mobile",4], ["TV",5]]},
@@ -133,4 +133,4 @@ def set_category(request):
                 ]
             }
         ]
-        return JsonResponse(my_arr, safe=False)
+        return JsonResponse(categories, safe=False)
