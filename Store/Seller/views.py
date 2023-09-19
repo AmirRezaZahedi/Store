@@ -92,11 +92,13 @@ def show_orders(request):
 def create_product(request):
  
     if request.method == 'POST':
-            cd = []
-            product=Product()
-            product.seller = request.user.seller
-            product = update_product(cd,product)
-            product.save()
+            #cd = []
+            #product=Product()
+            #product.seller = request.user.seller
+            #product = update_product(cd,product)
+            #product.save()
+            print("sssssssssssssssssssssssssssss")
+            data = json.loads(request.body.decode('utf-8'))
             return redirect('productManager')
 
     else:

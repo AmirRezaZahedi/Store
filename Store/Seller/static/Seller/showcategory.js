@@ -72,7 +72,7 @@ function createTree(array, parent) {
 }
 
 function sendSelectedValueToServer(selectedValue) {
-    const url = 'http://127.0.0.1:8000/seller/product-manager/create';
+    const url = 'http://127.0.0.1:8000/seller/product-manager/create/category';
     const dataToSend = { selectedCategory: selectedValue };
 
     fetch(url, {
@@ -130,10 +130,23 @@ function sendSelectedValueToServer(selectedValue) {
 }
 
 function send_productForm(form, intFields, charFields, imgFields) {
+    debugger;
+    const int = {};
+    for (const field of intFields) {
+        const inputElement = form.querySelector(`[name="${field}"]`);
+        int[field] = inputElement.value;
+    }
+    const char = {};
+    for (const field of charFields) {
+        const inputElement = form.querySelector(`[name="${field}"]`);
+        char[field] = inputElement.value;
+    }
+    const img = {};
+    for (const field of imgFields) {
+        const inputElement = form.querySelector(`[name="${field}"]`);
+        img[field] = inputElement.value;
+    }
 
-    int = { field: form for field of intFields }
-    char = { field: form for field of charFields }
-    img = { field: form for field of imgFields }
     dataToSend=[int,char,img]
     const url = 'http://127.0.0.1:8000/seller/product-manager/create';
 
