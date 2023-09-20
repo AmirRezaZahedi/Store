@@ -14,6 +14,8 @@ def update_product(cd,product):
     product.price = cd["price"]
     product.quantity = cd["quantity"]
     product.product_quantity= cd["product_quantity"]
+
+
     product.image = cd["image"]
 
     return product
@@ -22,18 +24,21 @@ def fill_form(request,product):
     form = product_detailform()
 
     form.initial['name']=product.name
-    form.initial['image']=product.image
     form.initial['price']=product.price
     form.initial['quantity']=product.quantity
     form.initial['product_quantity']=product.product_quantity
 
+    form.initial['image']=product.image
+
     return form
 
 def get_fields(category):
-    intFields=['age']
-    charField=['color']
-    imageField=['image']
-    return intFields, charField, imageField
+    
+    choices=["تعدادی","کیلویی"]
+
+    fields = [["price",0],["quantity",0],["name",1],["image",2],["product_quantity",3,choices]]
+
+    return fields
 
 
 @login_required
@@ -92,15 +97,17 @@ def show_orders(request):
 def create_product(request):
  
     if request.method == 'POST':
-            #cd = []
-            #product=Product()
-            #product.seller = request.user.seller
-            #product = update_product(cd,product)
-            #product.save()
-            print("sssssssssssssssssssssssssssss")
-            data = json.loads(request.body.decode('utf-8'))
-            return redirect('productManager')
+            
+            cd = request.POST.copy()
+            cd.update(request.FILES)
 
+            product=Product()
+            product.seller = request.user.seller
+            product = update_product(cd,product)
+            product.save()
+
+            response_data = {'message': 'محصول با موفقیت ایجاد شد.'}
+            return JsonResponse(response_data, safe=False)
     else:
         pass
     
@@ -109,23 +116,21 @@ def create_product(request):
 def set_category(request):
 
     if request.method == 'POST':
+
         try:
             data = json.loads(request.body.decode('utf-8'))  # Parse JSON data from request body
-            category = data.get('selectedCategory')
-            intFields, charField, imageField = get_fields(category)
-            inputFields = [intFields, charField, imageField]
+            category = data.get('category')
 
+            felieds = get_fields(category)
             
-            
-            return JsonResponse(inputFields, safe=False)
+            return JsonResponse(felieds, safe=False)
     
         except json.JSONDecodeError:
             response_data = {'error': 'Invalid JSON data'}
             return JsonResponse(response_data, status=400)  # Return a 400 Bad Request status for invalid JSON
+        
     else:
 
-        
-    
         categories = [
             {
                 "product": [

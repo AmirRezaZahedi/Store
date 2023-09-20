@@ -5,3 +5,4 @@ from .models import Product, staticFeature,charDynamicFeature,ImageDynamicFeatur
 admin.site.register(charDynamicFeature)
 admin.site.register(ImageDynamicFeature)
 admin.site.register(intDynamicFeature)
+admin.site.register(Product)

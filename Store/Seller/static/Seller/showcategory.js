@@ -3,14 +3,28 @@ const treeContainer = document.getElementById("tree");
 document.addEventListener("DOMContentLoaded", function () {
   getcategory(); 
 });
-function make_form(formData, type, form) {
-  for (const field of formData) {
-
+function make_form(fields, form) {
+  for (const field of fields) {
     const input = document.createElement('input');
-    input.setAttribute('type', type);
-    input.setAttribute('name', field);
+    input.setAttribute('name', field[0]);
     input.setAttribute("required", "required");
-    //input.setAttribute('value', formData[key]);
+
+    if(field[1]==0){
+        input.setAttribute('type', "number");
+    }
+    
+    if(field[1]==1){
+        input.setAttribute('type', "text");
+    }
+    
+    if(field[1]==2){
+        input.setAttribute('type', "file");
+    }
+    
+    if(field[1]==3){
+        input.setAttribute('type', "radio");
+    }
+
     form.appendChild(input);
   }
 }
@@ -54,7 +68,7 @@ function createTree(array, parent) {
 
             // Add a click event listener to the radio button
             radioInput.addEventListener("click", function () {
-                sendSelectedValueToServer(data[1]); // Call a function to send the value to the server
+                sendCategory(data[1]); // Call a function to send the value to the server
             });
 
             sublist.appendChild(radioLabelElement);
@@ -71,9 +85,9 @@ function createTree(array, parent) {
     }
 }
 
-function sendSelectedValueToServer(selectedValue) {
+function sendCategory(category) {
     const url = 'http://127.0.0.1:8000/seller/product-manager/create/category';
-    const dataToSend = { selectedCategory: selectedValue };
+    const dataToSend = { category: category };
 
     fetch(url, {
         method: 'POST',
@@ -90,34 +104,29 @@ function sendSelectedValueToServer(selectedValue) {
             return response.json();
         })
         .then(data => {
-            const int = data[0]
-            const char = data[1]
-            const img = data[2]
-
+    
             const formContainer = document.getElementById('form-container');
             const previousForm = formContainer.querySelector('form');
             if (previousForm) {
                 previousForm.remove();
             }
             const form = document.createElement('form');
-            form.action = '';
-            form.method = 'POST';
-            make_form(int, 'number', form);
-            make_form(char, 'text', form);
-            make_form(img, 'file', form);
 
+            form.enctype = 'multipart/form-data';
+            make_form(data, form);
+        
             const csrfTokenInput = document.createElement('input');
             csrfTokenInput.type = 'hidden';
             csrfTokenInput.name = 'csrfmiddlewaretoken'; 
             csrfTokenInput.value = csrfToken;
             
             const submitButton = document.createElement('input');
-            submitButton.type = 'submit';
+            submitButton.type = 'button';
             submitButton.value = 'Submit';
 
             submitButton.addEventListener("click", function () {
-                send_productForm(form,int,char,img); // Call a function to send the value to the server
-            });
+                sendProductForm(form); // Call a function to send the value to the server
+            })
 
             formContainer.appendChild(form);
             form.appendChild(csrfTokenInput);
@@ -129,34 +138,18 @@ function sendSelectedValueToServer(selectedValue) {
 
 }
 
-function send_productForm(form, intFields, charFields, imgFields) {
-    debugger;
-    const int = {};
-    for (const field of intFields) {
-        const inputElement = form.querySelector(`[name="${field}"]`);
-        int[field] = inputElement.value;
-    }
-    const char = {};
-    for (const field of charFields) {
-        const inputElement = form.querySelector(`[name="${field}"]`);
-        char[field] = inputElement.value;
-    }
-    const img = {};
-    for (const field of imgFields) {
-        const inputElement = form.querySelector(`[name="${field}"]`);
-        img[field] = inputElement.value;
-    }
-
-    dataToSend=[int,char,img]
+function sendProductForm(form) {
+    
+    const formData = new FormData(form);
     const url = 'http://127.0.0.1:8000/seller/product-manager/create';
 
     fetch(url, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json', // Set the content type to JSON
+            
             'X-CSRFToken': csrfToken, // Include the CSRF token from the JavaScript variable
         },
-        body: JSON.stringify(dataToSend), // Convert data to JSON
+        body: formData, 
     })
         .then(response => {
             if (!response.ok) {
@@ -170,5 +163,4 @@ function send_productForm(form, intFields, charFields, imgFields) {
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
-
 }
