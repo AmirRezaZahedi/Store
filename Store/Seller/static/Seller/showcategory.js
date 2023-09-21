@@ -3,31 +3,40 @@ const treeContainer = document.getElementById("tree");
 document.addEventListener("DOMContentLoaded", function () {
   getcategory(); 
 });
-function make_form(fields, form) {
-  for (const field of fields) {
+
+function createInput(type, labelContent, name, value) {
     const input = document.createElement('input');
-    input.setAttribute('name', field[0]);
-    input.setAttribute("required", "required");
-
-    if(field[1]==0){
-        input.setAttribute('type', "number");
+    const label = document.createElement('label');
+  
+    input.setAttribute('type', type);
+    input.setAttribute('name', name);
+  
+    if (type === 'radio') {
+      input.setAttribute('value', value);
     }
-    
-    if(field[1]==1){
-        input.setAttribute('type', "text");
-    }
-    
-    if(field[1]==2){
-        input.setAttribute('type', "file");
-    }
-    
-    if(field[1]==3){
-        input.setAttribute('type', "radio");
-    }
-
-    form.appendChild(input);
+  
+    label.innerHTML = labelContent;
+  
+    return [label, input];
   }
-}
+  
+  function makeForm(fields, form) {
+    for (const field of fields) {
+      const fieldType = field[1];
+      const fieldValues = field[0];
+  
+      for (const value of fieldValues) {
+        const [label, input] = createInput(
+          fieldType === 0 ? 'number' : fieldType === 1 ? 'text' : fieldType === 2 ? 'file' : 'radio',
+          value,
+          value, 
+          fieldType === 3 ? value : '' 
+        );
+        form.appendChild(label);
+        form.appendChild(input);
+      }
+    }
+  }
 
 function getcategory() {
 
@@ -113,7 +122,7 @@ function sendCategory(category) {
             const form = document.createElement('form');
 
             form.enctype = 'multipart/form-data';
-            make_form(data, form);
+            makeForm(data, form);
         
             const csrfTokenInput = document.createElement('input');
             csrfTokenInput.type = 'hidden';

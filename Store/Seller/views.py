@@ -36,7 +36,7 @@ def get_fields(category):
     
     choices=["تعدادی","کیلویی"]
 
-    fields = [["price",0],["quantity",0],["name",1],["image",2],["product_quantity",3,choices]]
+    fields = [[["price","quantity"],0],[["name"],1],[["image"],2],[["several","kilogram"],3]]
 
     return fields
 
