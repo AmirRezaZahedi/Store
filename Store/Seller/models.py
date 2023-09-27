@@ -8,18 +8,24 @@ class Product(models.Model):
         
     )
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
+
     name = models.CharField(max_length=20)
     image = models.ImageField()
     price = models.PositiveIntegerField()
     quantity = models.PositiveIntegerField()
     product_quantity = models.IntegerField(choices=CHOICES)
+    
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
+class Category(models.Model):
+
+    categoryName = models.CharField(max_length=20)
+    referenceCategory = models.ForeignKey('self')
 
 class staticFeature(models.Model):
 
     featureName = models.CharField(max_length=20)
-    products = models.ManyToManyField(Product)
-    childfeatures = models.ManyToManyField('self')
+    categoryName = models.ManyToManyField(Category)
     
     
 class intDynamicFeature(models.Model):
