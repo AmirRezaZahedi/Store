@@ -7,6 +7,16 @@ class Category(models.Model):
     referenceCategory = models.ForeignKey('self',on_delete=models.CASCADE)
 
 
+    def findRoot(self):
+        features = []
+        categoryRoot = self
+        while(categoryRoot.referenceCategory != null):
+            features.append(categoryRoot.staticfeature_set.all())
+            categoryRoot = categoryRoot.referenceCategory
+        return features
+
+
+
 
 class Product(models.Model):
     CHOICES=(
@@ -29,6 +39,11 @@ class staticFeature(models.Model):
     feature = models.ManyToManyField('self')
 
     category = models.ManyToManyField(Category)
+
+    @staticmethod
+    def findFeature(features, fields):
+
+        return
     
     
 class intDynamicFeature(models.Model):
