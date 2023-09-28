@@ -1,8 +1,9 @@
+from pyexpat import features
 from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from .models import Product,staticFeature,intDynamicFeature,charDynamicFeature,ImageDynamicFeature
-from Accounts.models import User, Seller
+from .models import *
+from Accounts.models import User,Seller
 from customer.models import Order 
 from .forms import *
 import json
@@ -14,6 +15,11 @@ def update_product(cd,product):
     product.price = cd["price"]
     product.quantity = cd["quantity"]
     product.product_quantity= cd["product_quantity"]
+
+    category=product.category
+    baseFeature=category.staticfeature_set.all()
+
+    
 
 
     product.image = cd["image"]
@@ -103,6 +109,10 @@ def create_product(request):
 
             product=Product()
             product.seller = request.user.seller
+
+            category = Category.objects.get(id=cd["category"])
+            product.category=category
+
             product = update_product(cd,product)
             product.save()
 
