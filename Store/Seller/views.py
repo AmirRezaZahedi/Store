@@ -8,6 +8,7 @@ from customer.models import Order
 from .forms import *
 from .serializer import *
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
 import json
@@ -133,6 +134,7 @@ def create_product(request):
     
     return render(request, "Seller/createproduct.html")
         
+
 class SetCategory(APIView):
 
     def post(self, request):
@@ -154,10 +156,12 @@ class SetCategory(APIView):
 
 
     def get(self, request):
-        # اطلاعات اولیه را تبدیل به JSON کنید
-        
-        productCategory = Category.objects.get(id=1)
-        serializer = CategorySerializer(productCategory)
-        serialized_data = serializer.data
+        try:
+            productCategory = Category.objects.get(id=1)
+            serializer = CategorySerializer(productCategory)
+            serialized_data = serializer.data
+            return Response(serialized_data, status=status.HTTP_200_OK)
+        except Category.DoesNotExist:
+            response_data = {'error': 'Category not found'}
+            return Response(response_data, status=status.HTTP_404_NOT_FOUND)
 
-        return Response(serialized_data, status=status.HTTP_200_OK)

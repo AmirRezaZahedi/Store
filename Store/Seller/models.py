@@ -36,7 +36,7 @@ class Product(models.Model):
 class staticFeature(models.Model):
 
     featureName = models.CharField(max_length=20)
-    features = models.ManyToManyField('self', null=TRUE)
+    features = models.ManyToManyField('self')
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=TRUE)
 
@@ -54,20 +54,20 @@ class staticFeature(models.Model):
 class intDynamicFeature(models.Model):
 
     featureNumber = models.IntegerField()
-    products = models.ManyToManyField(Product, null=TRUE)
+    products = models.ManyToManyField(Product)
     baseFeature = models.ForeignKey(staticFeature, on_delete=models.CASCADE)
 
 
 class charDynamicFeature(models.Model):
 
     featureName = models.CharField(max_length=20)
-    products = models.ManyToManyField(Product, null=TRUE)
+    products = models.ManyToManyField(Product)
     baseFeature = models.ForeignKey(staticFeature, on_delete=models.CASCADE)
 
 class ImageDynamicFeature(models.Model):
 
     featureImage = models.CharField(max_length=20)
-    products = models.ManyToManyField(Product, null=TRUE)
+    products = models.ManyToManyField(Product)
     baseFeature = models.ForeignKey(staticFeature, on_delete=models.CASCADE)
 
 
