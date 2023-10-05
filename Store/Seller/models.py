@@ -36,15 +36,19 @@ class Product(models.Model):
 class staticFeature(models.Model):
 
     featureName = models.CharField(max_length=20)
-    feature = models.ManyToManyField('self', null=TRUE)
+    features = models.ManyToManyField('self', null=TRUE)
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=TRUE)
 
 
     @staticmethod
-    def findFeature(features, fields):
-
-        return
+    def findFields(features, fields):
+        for feature in features:
+            x = feature.features.all().filter(featureName="field")
+            if(x != None):
+                fields.append(feature)
+            
+        return fields
     
     
 class intDynamicFeature(models.Model):

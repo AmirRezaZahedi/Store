@@ -49,6 +49,11 @@ def get_fields(category):
 
     fields = [["price","quantity"],["name"],[],["kilogram"]]
 
+    
+    features = category.findRoot()
+    fields = []
+    fields = staticFeature.findFields(features,fields)
+
     return fields
 
 
@@ -133,13 +138,11 @@ class SetCategory(APIView):
     def post(self, request):
         try:
             data = json.loads(request.body.decode('utf-8'))
-            categoryID = data.get('category')
+            category = Category.objects.get(id=data['category'])
 
             # اطلاعات مدل "Category" را تبدیل به JSON کنید
-            category = Category.objects.get(id=categoryID)
-            features = category.findRoot()
-
-            serializer = FieldsSerializer(features)
+            fields=get_fields(category)
+            serializer = FieldsSerializer(fields)
             serialized_data = serializer.data
 
             return Response(serialized_data, status=status.HTTP_200_OK)
