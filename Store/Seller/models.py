@@ -11,12 +11,11 @@ class Category(models.Model):
     def findRoot(self):
         features = []
         categoryRoot = self
-        while(categoryRoot.referenceCategory != ''):
+        while(categoryRoot.referenceCategory != None):
             features.append(categoryRoot.staticfeature_set.all())
             categoryRoot = categoryRoot.referenceCategory
+
         return features
-
-
 
 
 class Product(models.Model):

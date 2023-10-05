@@ -136,7 +136,7 @@ class SetCategory(APIView):
             category = data.get('category')
 
             # اطلاعات مدل "Category" را تبدیل به JSON کنید
-            category_obj = Category.objects.get(categoryName=category)
+            category_obj = Category.objects.get(id=category)
             serializer = CategorySerializer(category_obj)
             serialized_data = serializer.data
 
@@ -149,13 +149,9 @@ class SetCategory(APIView):
 
     def get(self, request):
         # اطلاعات اولیه را تبدیل به JSON کنید
-        categories = [
-            {
-                "product": [
-                    {"digital": [["mobile", 5], ["TV", 6]]},
-                    ["clothes", 3],
-                    {"drink": [["water", 8], ["wine", 9], ["soda", 10]]}
-                ]
-            }
-        ]
-        return Response(categories, status=status.HTTP_200_OK)
+        
+        productCategory = Category.objects.get(id=1)
+        serializer = CategorySerializer(productCategory)
+        serialized_data = serializer.data
+
+        return Response(serialized_data, status=status.HTTP_200_OK)
