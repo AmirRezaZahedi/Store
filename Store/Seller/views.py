@@ -6,6 +6,10 @@ from .models import *
 from Accounts.models import User,Seller
 from customer.models import Order 
 from .forms import *
+from .serializer import CategorySerializer
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
 import json
 
 def update_product(cd,product):
@@ -17,8 +21,9 @@ def update_product(cd,product):
     product.product_quantity= cd["product_quantity"]
 
     category=product.category
-    baseFeature=category.staticfeature_set.all()
+    features=category.findRoot()
 
+    
     
 
 
@@ -42,7 +47,7 @@ def get_fields(category):
     
     choices=["تعدادی","کیلویی"]
 
-    fields = [[["price","quantity"],0],[["name"],1],[["image"],2],[["several","kilogram"],3]]
+    fields = [["price","quantity"],["name"],[],["kilogram"]]
 
     return fields
 
@@ -123,31 +128,34 @@ def create_product(request):
     
     return render(request, "Seller/createproduct.html")
         
-def set_category(request):
+class SetCategory(APIView):
 
-    if request.method == 'POST':
-
+    def post(self, request):
         try:
-            data = json.loads(request.body.decode('utf-8'))  # Parse JSON data from request body
+            data = json.loads(request.body.decode('utf-8'))
             category = data.get('category')
 
-            felieds = get_fields(category)
-            
-            return JsonResponse(felieds, safe=False)
-    
+            # اطلاعات مدل "Category" را تبدیل به JSON کنید
+            category_obj = Category.objects.get(categoryName=category)
+            serializer = CategorySerializer(category_obj)
+            serialized_data = serializer.data
+
+            return Response(serialized_data, status=status.HTTP_200_OK)
+
         except json.JSONDecodeError:
             response_data = {'error': 'Invalid JSON data'}
-            return JsonResponse(response_data, status=400)  # Return a 400 Bad Request status for invalid JSON
-        
-    else:
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
+
+    def get(self, request):
+        # اطلاعات اولیه را تبدیل به JSON کنید
         categories = [
             {
                 "product": [
-                    {"digital": [["mobile",4], ["TV",5]]},
-                    ["clothes",2],
-                    {"drink": [["water",6], ["wine",7], ["soda",8]]}
+                    {"digital": [["mobile", 5], ["TV", 6]]},
+                    ["clothes", 3],
+                    {"drink": [["water", 8], ["wine", 9], ["soda", 10]]}
                 ]
             }
         ]
-        return JsonResponse(categories, safe=False)
+        return Response(categories, status=status.HTTP_200_OK)
