@@ -6,7 +6,7 @@ from .models import *
 from Accounts.models import User,Seller
 from customer.models import Order 
 from .forms import *
-from .serializer import CategorySerializer
+from .serializer import *
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
@@ -133,16 +133,19 @@ class SetCategory(APIView):
     def post(self, request):
         try:
             data = json.loads(request.body.decode('utf-8'))
-            category = data.get('category')
+            categoryID = data.get('category')
 
             # اطلاعات مدل "Category" را تبدیل به JSON کنید
-            category_obj = Category.objects.get(id=category)
-            serializer = CategorySerializer(category_obj)
+            category = Category.objects.get(id=categoryID)
+            features = category.findRoot()
+
+            serializer = FieldsSerializer(features)
             serialized_data = serializer.data
 
             return Response(serialized_data, status=status.HTTP_200_OK)
 
         except json.JSONDecodeError:
+
             response_data = {'error': 'Invalid JSON data'}
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
