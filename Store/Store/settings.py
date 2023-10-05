@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'Accounts',
     'Home',
     'Seller',
-    'customer'
+    'customer',
+    'debug_toolbar',
 ]
 INTERNAL_IPS = [
     # ...
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'Store.urls'
