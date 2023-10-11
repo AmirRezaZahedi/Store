@@ -142,9 +142,7 @@ class SetCategory(APIView):
             data = json.loads(request.body.decode('utf-8'))
             category = Category.objects.get(id=data['category'])
 
-
             fields=get_fields(category)
-            print("after fields:---------------\n")
             serialized_data = FieldsSerializer(fields, many=True).data
 
             return Response(serialized_data, status=status.HTTP_200_OK)
@@ -157,13 +155,10 @@ class SetCategory(APIView):
 
     def get(self, request):
         try:
-            #queryset = Category.objects.all()
+            
             productCategory = Category.objects.get(id=1)
-            print(productCategory)
             serializer = CategorySerializer(productCategory)
             return Response(serializer.data, status=status.HTTP_200_OK)
-            #category_serializer = CategorySerializer()
-            #data_related_to_row_1 = category_serializer.get_data_related_to_row_1()
         
         except Category.DoesNotExist:
             response_data = {'error': 'Category not found'}

@@ -4,27 +4,38 @@ from .models import Category,staticFeature
 class CategorySerializer(serializers.ModelSerializer):
     # A serializer for Category model with child category support.
 
-    child_categories = serializers.SerializerMethodField()
+    childCategories = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['id','categoryName','childCategories']
 
-    def get_child_categories(self, obj):
+    def get_childCategories(self, obj):
         # Retrieve and serialize child categories if they exist.
 
         # Get child categories related to the current Category object.
-        child_categories = obj.child_categories.all()
+        childCategories = obj.childCategories.all()
 
         # If child categories exist, serialize them using this serializer.
-        if child_categories:
-            return CategorySerializer(child_categories, many=True).data
+        if childCategories:
+            return CategorySerializer(childCategories, many=True).data
         else:
             return None
 
 class FieldsSerializer(serializers.ModelSerializer):
 
+    describerFeatures = serializers.SerializerMethodField()
+
     class Meta:
         model = staticFeature
-        fields = '__all__'
+        fields = ['id','featureName']
+
+    def get_describerFeatures(self, obj):
+       
+        describerFeatures = obj.describerFeatures.all()
+
+        if describerFeatures:
+            return CategorySerializer(describerFeatures, many=True).data
+        else:
+            return None
 

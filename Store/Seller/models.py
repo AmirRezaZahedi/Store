@@ -5,7 +5,7 @@ from Accounts.models import Seller
 class Category(models.Model):
 
     categoryName = models.CharField(max_length=20)
-    referenceCategory = models.ForeignKey('self',on_delete=models.CASCADE, null=TRUE, related_name='child_categories')
+    referenceCategory = models.ForeignKey('self',on_delete=models.CASCADE, null=TRUE, related_name='childCategories')
 
 
     def findRoot(self):
@@ -36,7 +36,7 @@ class Product(models.Model):
 class staticFeature(models.Model):
 
     featureName = models.CharField(max_length=20)
-    features = models.ManyToManyField('self')
+    describedFeatures = models.ManyToManyField('self',related_name='describerFeatures')
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=TRUE)
 
