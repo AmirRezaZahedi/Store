@@ -5,13 +5,13 @@ from Accounts.models import Seller
 class Category(models.Model):
 
     categoryName = models.CharField(max_length=20)
-    referenceCategory = models.ForeignKey('self',on_delete=models.CASCADE, null=TRUE)
+    referenceCategory = models.ForeignKey('self',on_delete=models.CASCADE, null=TRUE, related_name='child_categories')
 
 
     def findRoot(self):
         features = []
         categoryRoot = self
-        while(categoryRoot.referenceCategory != None):
+        while(categoryRoot != None):
             features.append(categoryRoot.staticfeature_set.all())
             categoryRoot = categoryRoot.referenceCategory
 
@@ -43,10 +43,11 @@ class staticFeature(models.Model):
 
     @staticmethod
     def findFields(features, fields):
-        for feature in features:
-            x = feature.features.all().filter(featureName="field")
-            if(x != None):
-                fields.append(feature)
+        for group in features:
+            for feature in group:
+                x = feature.features.all().filter(featureName="field")
+                if(x != None):
+                    fields.append(feature)
             
         return fields
     
