@@ -23,19 +23,18 @@ class CategorySerializer(serializers.ModelSerializer):
             return None
 
 class FieldsSerializer(serializers.ModelSerializer):
-
     describerFeatures = serializers.SerializerMethodField()
 
     class Meta:
         model = staticFeature
-        fields = ['id','featureName']
+        fields = ['id', 'featureName', 'describerFeatures']
 
     def get_describerFeatures(self, obj):
        
-        describerFeatures = obj.describerFeatures.all()
+        describerFeatures = obj.staticfeature_set.all()
 
         if describerFeatures:
-            return CategorySerializer(describerFeatures, many=True).data
+            return FieldsSerializer(describerFeatures, many=True).data
         else:
             return None
 

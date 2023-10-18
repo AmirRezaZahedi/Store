@@ -36,7 +36,7 @@ class Product(models.Model):
 class staticFeature(models.Model):
 
     featureName = models.CharField(max_length=20)
-    describedFeatures = models.ManyToManyField('self',related_name='describerFeatures')
+    describedFeatures = models.ManyToManyField('self', symmetrical=False)
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=TRUE)
 
@@ -45,8 +45,8 @@ class staticFeature(models.Model):
     def findFields(features, fields):
         for group in features:
             for feature in group:
-                x = feature.features.all().filter(featureName="field")
-                if(x != None):
+                x = feature.staticfeature_set.all()
+                if x.exists():
                     fields.append(feature)
             
         return fields
