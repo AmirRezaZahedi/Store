@@ -1,4 +1,6 @@
+from dataclasses import Field
 from pyexpat import features
+from PIL import Image
 from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -16,19 +18,68 @@ import json
 def update_product(cd,product):
     # Updta a new product with provided data
     
-    product.name = cd["name"]
-    product.price = cd["price"]
-    product.quantity = cd["quantity"]
-    product.product_quantity= cd["product_quantity"]
+    #product.name = cd["name"]
+    product,name = "mobile"
+    #product.price = cd["price"]
+    product.price = 580
+    #product.quantity = cd["quantity"]
+    product.quantity = 8;
+    #product.product_quantity= cd["product_quantity"]
+    product.product_quantity=0
+    
 
     category=product.category
-    features=category.findRoot()
+    features = category.findRoot()
+    fields = []
+    fields = staticFeature.findFields(features,fields)
 
+    features=[]
     
+    for field in fields:
+
+        typeField=0
+
+        if(field.featureName not in cd):return False
+        
+        intField=field.staticfeature_set.filter(featureName="intField")
+        if intField.exists():typeField=intField.id
+
+        else:
+            charField=field.staticfeature_set.filter(featureName="charField")
+            if charField.exists():typeField=charField.id
+
+            else:
+                imageField=field.staticfeature_set.filter(featureName="imageField")
+                if imageField.exists():typeField=imageField.id
+                else:return False
+
+        
+        Type = type(cd[field.featureName])
+
+        if Type is int and typeField == 9:
+
+            feature=intDynamicFeature()
+            feature.featureNumber=cd[field.featureName]
+            feature.baseFeature=field
+
+        elif Type is str and typeField == 8: 
+
+            feature=charDynamicFeature()
+            feature.featureName=cd[field.featureName]
+            feature.baseFeature=field
+
+        elif Type is Image.Image and typeField == 7:  
+            feature=ImageDynamicFeature()
+            feature.featureImage=cd[field.featureName]
+            feature.baseFeature=field
+
+        else:return False
+
+        feature.products.add(product)
+        features.append(feature)
     
-
-
-    product.image = cd["image"]
+    for feature in features:
+        feature.save()
 
     return product
 
@@ -110,29 +161,35 @@ def show_orders(request):
     return render(request, "Seller/orders.html", {'orders': orders})
 
 
-@login_required
-def create_product(request):
+
+class CreateProduct(APIView):
  
-    if request.method == 'POST':
+    def post(self, request):
             
-            cd = request.POST.copy()
-            cd.update(request.FILES)
+        cd = request.POST.copy()
+        cd.update(request.FILES)
 
-            product=Product()
-            product.seller = request.user.seller
+        product=Product()
+        product.seller = request.user.seller
 
-            category = Category.objects.get(id=cd["category"])
-            product.category=category
+        category = Category.objects.get(id=cd["category"])
+        product.category=category
 
-            product = update_product(cd,product)
-            product.save()
+        product = update_product(cd,product)
+        if(product==False):
+            return JsonResponse({'message': 'created product failed..!'})
 
-            response_data = {'message': 'محصول با موفقیت ایجاد شد.'}
-            return JsonResponse(response_data, safe=False)
-    else:
-        pass
+        product.save()
+
+        return JsonResponse({'message': 'create product successfull'})
+        
     
-    return render(request, "Seller/createproduct.html")
+    def get(self, request):
+
+        response_data = {'error': 'get not suported..!'}
+        return Response(response_data, status=status.HTTP_404_NOT_FOUND)
+
+        #return render(request, "Seller/createproduct.html")
         
 
 class SetCategory(APIView):
