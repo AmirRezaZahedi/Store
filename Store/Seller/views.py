@@ -19,11 +19,11 @@ def update_product(cd,product):
     # Updta a new product with provided data
     
     #product.name = cd["name"]
-    product,name = "mobile"
+    product.name = "mobile"
     #product.price = cd["price"]
     product.price = 580
     #product.quantity = cd["quantity"]
-    product.quantity = 8;
+    product.quantity = 8
     #product.product_quantity= cd["product_quantity"]
     product.product_quantity=0
     
@@ -42,15 +42,15 @@ def update_product(cd,product):
         if(field.featureName not in cd):return False
         
         intField=field.staticfeature_set.filter(featureName="intField")
-        if intField.exists():typeField=intField.id
+        if intField.exists():typeField=intField[0].id
 
         else:
             charField=field.staticfeature_set.filter(featureName="charField")
-            if charField.exists():typeField=charField.id
+            if charField.exists():typeField=charField[0].id
 
             else:
                 imageField=field.staticfeature_set.filter(featureName="imageField")
-                if imageField.exists():typeField=imageField.id
+                if imageField.exists():typeField=imageField[0].id
                 else:return False
 
         
@@ -75,11 +75,12 @@ def update_product(cd,product):
 
         else:return False
 
-        feature.products.add(product)
+        #feature.products.add(product)
         features.append(feature)
-    
+    product.save()    
     for feature in features:
         feature.save()
+        feature.products.add(product)
 
     return product
 
@@ -115,13 +116,17 @@ def seller_profile(request):
     return render(request,"Seller/sellerProfile.html")
 
 
-@login_required
-def product_manager(request):
 
+class ProductManager(APIView):
+    def post(self, request):
+        pass
 
-    products =request.user.seller.product_set.all()
+    def get(self, request):
 
-    return render(request,"Seller/productManager.html",{'products':products})
+        products = request.user.seller.product_set.all()
+        serialized_data = ProductSerializer(products, many=True).data
+        return Response(serialized_data, status=status.HTTP_200_OK)
+        #return render(request,"Seller/productManager.html",{'products':products})
 
 
 @login_required
@@ -155,10 +160,10 @@ def delete_product(request,id):
 
 @login_required
 def show_orders(request):
+    def get(self, request):
+        orders =request.user.seller.order_set.all()
 
-    orders =request.user.seller.order_set.all()
-
-    return render(request, "Seller/orders.html", {'orders': orders})
+        return render(request, "Seller/orders.html", {'orders': orders})
 
 
 
@@ -166,8 +171,11 @@ class CreateProduct(APIView):
  
     def post(self, request):
             
-        cd = request.POST.copy()
-        cd.update(request.FILES)
+        #cd = request.POST.copy()
+        #cd.update(request.FILES)
+        cd = request.data
+
+       # cd = json.loads(body_copy.decode('utf-8'))
 
         product=Product()
         product.seller = request.user.seller
@@ -179,7 +187,7 @@ class CreateProduct(APIView):
         if(product==False):
             return JsonResponse({'message': 'created product failed..!'})
 
-        product.save()
+        #product.save()
 
         return JsonResponse({'message': 'create product successfull'})
         

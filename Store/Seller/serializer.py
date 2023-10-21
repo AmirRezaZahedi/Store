@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category,staticFeature
+from .models import Category,staticFeature,Product,intDynamicFeature,charDynamicFeature,ImageDynamicFeature
 
 class CategorySerializer(serializers.ModelSerializer):
     # A serializer for Category model with child category support.
@@ -38,3 +38,80 @@ class FieldsSerializer(serializers.ModelSerializer):
         else:
             return None
 
+class IntDynamicSerializer(serializers.ModelSerializer):
+    baseFeature = serializers.SerializerMethodField()
+    class Meta:
+        model = intDynamicFeature
+        fields = ['featureNumber', 'baseFeature']
+
+    def get_baseFeature(self, obj):
+        basefeature = obj.baseFeature
+
+        if basefeature:
+            return FieldsSerializer(basefeature).data
+        else:
+            return None
+class CharDynamicSerializer(serializers.ModelSerializer):
+    baseFeature = serializers.SerializerMethodField()
+
+    class Meta:
+        model = charDynamicFeature
+        fields = ['featureName', 'baseFeature']
+    
+    def get_baseFeature(self, obj):
+        basefeature = obj.baseFeature
+
+        if basefeature:
+            return FieldsSerializer(basefeature).data
+        else:
+            return None
+
+
+class ImageDynamicSerializer(serializers.ModelSerializer):
+    baseFeature = serializers.SerializerMethodField()
+    class Meta:
+        model = ImageDynamicFeature
+        fields = ['featureImage', 'baseFeature']
+
+    def get_baseFeature(self, obj):
+        basefeature = obj.baseFeature
+
+        if basefeature:
+            return FieldsSerializer(basefeature).data
+        else:
+            return None
+
+class ProductSerializer(serializers.ModelSerializer):
+    intdynamic = serializers.SerializerMethodField()
+    chardynamic = serializers.SerializerMethodField()
+    imagedynamic = serializers.SerializerMethodField()
+
+
+    class Meta:
+        model = Product
+        fields = ['name', 'price', 'quantity', 'product_quantity', 'intdynamic', 'chardynamic', 'imagedynamic']
+
+    
+    def get_intdynamic(self, obj):
+        intdynamic = obj.intD.all()
+
+        if intdynamic:
+            return IntDynamicSerializer(intdynamic, many=True).data
+        else:
+            return None
+
+    def get_chardynamic(self, obj):
+        chardynamic = obj.charD.all()
+
+        if chardynamic:
+            return CharDynamicSerializer(chardynamic, many=True).data
+        else:
+            return None
+    
+    def get_imagedynamic(self, obj):
+        imagedynamic = obj.imgD.all()
+
+        if imagedynamic:
+            return ImageDynamicSerializer(imagedynamic, many=True).data
+        else:
+            return None
