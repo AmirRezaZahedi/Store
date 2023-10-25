@@ -150,7 +150,7 @@ def update_Product(request,id):
     return render(request, "Seller/productDetail.html", {'form': form})
 
 
-@login_required
+
 def delete_product(request,id):
 
     Product.objects.get(id=id).delete()
@@ -158,12 +158,20 @@ def delete_product(request,id):
     return redirect('productManager')
     
 
-@login_required
-def show_orders(request):
-    def get(self, request):
-        orders =request.user.seller.order_set.all()
 
-        return render(request, "Seller/orders.html", {'orders': orders})
+class ShowOrders(APIView):
+    
+    def post(self,request):
+
+        pass 
+
+    def get(self,request):
+        
+        orders =request.user.seller.order_set.all()
+        serializer = OrdersSerializer(orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    #return render(request, "Seller/orders.html", {'orders': orders})
 
 
 
@@ -174,8 +182,6 @@ class CreateProduct(APIView):
         #cd = request.POST.copy()
         #cd.update(request.FILES)
         cd = request.data
-
-       # cd = json.loads(body_copy.decode('utf-8'))
 
         product=Product()
         product.seller = request.user.seller
@@ -197,7 +203,7 @@ class CreateProduct(APIView):
         response_data = {'error': 'get not suported..!'}
         return Response(response_data, status=status.HTTP_404_NOT_FOUND)
 
-        #return render(request, "Seller/createproduct.html")
+    #return render(request, "Seller/createproduct.html")
         
 
 class SetCategory(APIView):
@@ -219,8 +225,8 @@ class SetCategory(APIView):
 
 
     def get(self, request):
+
         try:
-            
             productCategory = Category.objects.get(id=1)
             serializer = CategorySerializer(productCategory)
             return Response(serializer.data, status=status.HTTP_200_OK)

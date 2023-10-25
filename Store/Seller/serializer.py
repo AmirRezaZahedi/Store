@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Category,staticFeature,Product,intDynamicFeature,charDynamicFeature,ImageDynamicFeature
+from customer.models import Order
+from customer.serializer import CustomerSerializer
 
 class CategorySerializer(serializers.ModelSerializer):
     # A serializer for Category model with child category support.
@@ -23,6 +25,7 @@ class CategorySerializer(serializers.ModelSerializer):
             return None
 
 class FieldsSerializer(serializers.ModelSerializer):
+
     describerFeatures = serializers.SerializerMethodField()
 
     class Meta:
@@ -39,6 +42,7 @@ class FieldsSerializer(serializers.ModelSerializer):
             return None
 
 class IntDynamicSerializer(serializers.ModelSerializer):
+
     baseFeature = serializers.SerializerMethodField()
     class Meta:
         model = intDynamicFeature
@@ -52,6 +56,7 @@ class IntDynamicSerializer(serializers.ModelSerializer):
         else:
             return None
 class CharDynamicSerializer(serializers.ModelSerializer):
+
     baseFeature = serializers.SerializerMethodField()
 
     class Meta:
@@ -68,6 +73,7 @@ class CharDynamicSerializer(serializers.ModelSerializer):
 
 
 class ImageDynamicSerializer(serializers.ModelSerializer):
+
     baseFeature = serializers.SerializerMethodField()
     class Meta:
         model = ImageDynamicFeature
@@ -113,5 +119,29 @@ class ProductSerializer(serializers.ModelSerializer):
 
         if imagedynamic:
             return ImageDynamicSerializer(imagedynamic, many=True).data
+        else:
+            return None
+
+class OrdersSerializer(serializers.ModelSerializer):
+    product = serializers.SerializerMethodField()
+    customer = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Order
+        fields = ['address', 'quantity', 'product' ,'customer']
+
+    def get_product(self, obj):
+        product = obj.product
+
+        if product:
+            return ProductSerializer(product, many=True).data
+        else:
+            return None
+
+    def get_customer(self, obj):
+        customer = obj.customer
+
+        if customer:
+            return CustomerSerializer(customer, many=True).data
         else:
             return None
