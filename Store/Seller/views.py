@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 import json
 
 def update_product(cd,product):
@@ -213,7 +213,7 @@ class ProductViewSet(ModelViewSet):
 
     #return render(request, "Seller/createproduct.html")
 
-class FieldsViewSet(ModelViewSet):
+class FieldsViewSet(ReadOnlyModelViewSet):
     
     
     serializer_class = FieldsSerializer
@@ -227,10 +227,17 @@ class FieldsViewSet(ModelViewSet):
         return fields 
       
 
-class CategoryViewSet(ModelViewSet):
-    
-    queryset = Category.objects.get(id=1)
+
+
+class CategoryViewSet(ReadOnlyModelViewSet):
     serializer_class = CategorySerializer
+
+    def get_queryset(self):
+        return Category.objects.filter(id=1)
+        #queryset = Category.objects.all()
+        
+
+
     
 
 
