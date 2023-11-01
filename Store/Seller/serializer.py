@@ -86,7 +86,7 @@ class ProductSerializer(serializers.ModelSerializer):
     
 class OrdersSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
-    customer = serializers.SerializerMethodField()
+    customer = CustomerSerializer()
 
     class Meta:
         model = Order
