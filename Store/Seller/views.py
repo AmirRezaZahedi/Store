@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.viewsets import ViewSet
+from rest_framework.viewsets import ModelViewSet
 import json
 
 def update_product(cd,product):
@@ -130,7 +130,7 @@ class ProductManager(APIView):
         #return render(request,"Seller/productManager.html",{'products':products})
 
 
-class UpdateProduct(APIView):
+class P(ModelViewSet):
 
     def put(self, request, id):
         
@@ -152,7 +152,7 @@ class UpdateProduct(APIView):
         form=fill_form(request,product)
         
 
-    return render(request, "Seller/productDetail.html", {'form': form})
+    #return render(request, "Seller/productDetail.html", {'form': form})
 
 
 @login_required
@@ -180,16 +180,18 @@ class ShowOrders(APIView):
 
 
 
-class CreateProduct(APIView):
+class ProductViewSet(ModelViewSet):
+    
+    serializer_class=  ProductSerializer  
  
-    def post(self, request):
+    def create(self):
             
         #cd = request.POST.copy()
         #cd.update(request.FILES)
-        cd = request.data
+        cd = self.request.data
 
         product=Product()
-        product.seller = request.user.seller
+        product.seller = self.request.user.seller
 
         category = Category.objects.get(id=cd["category"])
         product.category=category
@@ -201,42 +203,35 @@ class CreateProduct(APIView):
         #product.save()
 
         return JsonResponse({'message': 'create product successfull'})
-        
     
-    def get(self, request):
-
-        response_data = {'error': 'get not suported..!'}
-        return Response(response_data, status=status.HTTP_404_NOT_FOUND)
+    def get_queryset(self):
+        
+        user=self.request.user
+        products=user.seller.product_set.all()
+        return products
+    
 
     #return render(request, "Seller/createproduct.html")
+
+class FieldsViewSet(ModelViewSet):
+    
+    
+    serializer_class = FieldsSerializer
+    
+    
+    def get_queryset(self):
+        category = Category.objects.get(id=self.kwargs['category_pk'])
+
+        fields=get_fields(category)
         
+        return fields 
+      
 
-class SetCategory(APIView):
-
-    def post(self, request):
-        try:
-            data = request.data
-            category = Category.objects.get(id=data['category'])
-
-            fields=get_fields(category)
-            serialized_data = FieldsSerializer(fields, many=True).data
-
-            return Response(serialized_data, status=status.HTTP_200_OK)
-
-        except json.JSONDecodeError:
-
-            response_data = {'error': 'Invalid JSON data'}
-            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+class CategoryViewSet(ModelViewSet):
+    
+    queryset = Category.objects.get(id=1)
+    serializer_class = CategorySerializer
+    
 
 
-    def get(self, request):
-
-        try:
-            productCategory = Category.objects.get(id=1)
-            serializer = CategorySerializer(productCategory)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        
-        except Category.DoesNotExist:
-            response_data = {'error': 'Category not found'}
-            return Response(response_data, status=status.HTTP_404_NOT_FOUND)
 
