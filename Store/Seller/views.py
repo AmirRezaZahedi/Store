@@ -117,66 +117,16 @@ def seller_profile(request):
     return render(request,"Seller/sellerProfile.html")
 
 
-
-class ProductManager(APIView):
-    def post(self, request):
-        pass
-
-    def get(self, request):
-
-        products = request.user.seller.product_set.all()
-        serialized_data = ProductSerializer(products, many=True).data
-        return Response(serialized_data, status=status.HTTP_200_OK)
-        #return render(request,"Seller/productManager.html",{'products':products})
-
-
-class P(ModelViewSet):
-
-    def put(self, request, id):
-        
-        pass
-        #cd = request.data
-        #product = Product.objects.get(id=id)
-        #product = update_product(cd,product)
-        #product.save()
-        #return redirect('productManager')
-
-    def get(self, request, id):
-        product = Product.objects.get(id=id)
-        serialized_data = ProductSerializer(product)
-        return Response(serialized_data.data, status=status.HTTP_200_OK)
-
-    def delete(self, request, id):
-        product = Product.objects.get(id=id)
-        
-        form=fill_form(request,product)
-        
-
-    #return render(request, "Seller/productDetail.html", {'form': form})
-
-
-@login_required
-def delete_product(request,id):
-
-    Product.objects.get(id=id).delete()
+class OrdersViewSet(ModelViewSet):
     
-    return redirect('productManager')
+    serializer_class = OrdersSerializer
     
-
-
-class ShowOrders(APIView):
-    
-    def post(self,request):
-
-        pass 
-
-    def get(self,request):
+    def get_queryset(self):
         
-        orders =request.user.seller.order_set.all()
-        serializer = OrdersSerializer(orders, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    #return render(request, "Seller/orders.html", {'orders': orders})
+        user=self.request.user
+        products=user.seller.order_set.all()
+        return products
+
 
 
 
@@ -211,8 +161,6 @@ class ProductViewSet(ModelViewSet):
         return products
     
 
-    #return render(request, "Seller/createproduct.html")
-
 class FieldsViewSet(ReadOnlyModelViewSet):
     
     
@@ -230,11 +178,8 @@ class FieldsViewSet(ReadOnlyModelViewSet):
 
 
 class CategoryViewSet(ReadOnlyModelViewSet):
+    queryset=Category.objects.filter(id=1)
     serializer_class = CategorySerializer
-
-    def get_queryset(self):
-        return Category.objects.filter(id=1)
-        #queryset = Category.objects.all()
         
 
 
