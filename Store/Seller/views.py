@@ -13,6 +13,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.viewsets import ViewSet
 import json
 
 def update_product(cd,product):
@@ -98,9 +99,9 @@ def fill_form(request,product):
 
 def get_fields(category):
     
-    choices=["تعدادی","کیلویی"]
+    #choices=["تعدادی","کیلویی"]
 
-    fields = [["price","quantity"],["name"],[],["kilogram"]]
+    #fields = [["price","quantity"],["name"],[],["kilogram"]]
 
     
     features = category.findRoot()
@@ -129,34 +130,27 @@ class ProductManager(APIView):
         #return render(request,"Seller/productManager.html",{'products':products})
 
 
-@login_required
-def update_Product(request,id):
-    if request.method == 'POST':
-        form = product_detailform(request.POST,request.FILES)
+class UpdateProduct(APIView):
+
+    def put(self, request, id):
         
-        if form.is_valid():
-            
-            cd = form.cleaned_data
-            product = Product.objects.get(id=id)
-            product = update_product(cd,product)
-            product.save()
-            return redirect('productManager')
-    else:
+        pass
+        #cd = request.data
+        #product = Product.objects.get(id=id)
+        #product = update_product(cd,product)
+        #product.save()
+        #return redirect('productManager')
+
+    def get(self, request, id):
         product = Product.objects.get(id=id)
+        serialized_data = ProductSerializer(product)
+        return Response(serialized_data.data, status=status.HTTP_200_OK)
+
+    def delete(self, request, id):
+        product = Product.objects.get(id=id)
+        product.delete()
+
         
-        form=fill_form(request,product)
-        
-
-    return render(request, "Seller/productDetail.html", {'form': form})
-
-
-@login_required
-def delete_product(request,id):
-
-    Product.objects.get(id=id).delete()
-    
-    return redirect('productManager')
-    
 
 @login_required
 def show_orders(request):
@@ -204,7 +198,7 @@ class SetCategory(APIView):
 
     def post(self, request):
         try:
-            data = json.loads(request.body.decode('utf-8'))
+            data = request.data
             category = Category.objects.get(id=data['category'])
 
             fields=get_fields(category)
