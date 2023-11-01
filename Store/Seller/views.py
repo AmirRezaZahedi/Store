@@ -128,8 +128,6 @@ class OrdersViewSet(ModelViewSet):
         return products
 
 
-
-
 class ProductViewSet(ModelViewSet):
     
     serializer_class=  ProductSerializer  

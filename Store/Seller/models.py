@@ -36,7 +36,7 @@ class Product(models.Model):
 class staticFeature(models.Model):
 
     featureName = models.CharField(max_length=20)
-    describedFeatures = models.ManyToManyField('self', symmetrical=False)
+    describedFeatures = models.ManyToManyField('self', symmetrical=False,related_name='describerFeatures')
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=TRUE)
 

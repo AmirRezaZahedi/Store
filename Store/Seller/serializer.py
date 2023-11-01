@@ -41,107 +41,53 @@ class FieldsSerializer(serializers.ModelSerializer):
         else:
             return None
 
+
+
 class IntDynamicSerializer(serializers.ModelSerializer):
 
-    baseFeature = serializers.SerializerMethodField()
+    baseFeature = FieldsSerializer()
+
     class Meta:
         model = intDynamicFeature
         fields = ['featureNumber', 'baseFeature']
 
-    def get_baseFeature(self, obj):
-        basefeature = obj.baseFeature
 
-        if basefeature:
-            return FieldsSerializer(basefeature).data
-        else:
-            return None
 class CharDynamicSerializer(serializers.ModelSerializer):
 
-    baseFeature = serializers.SerializerMethodField()
+    baseFeature = FieldsSerializer()
 
     class Meta:
         model = charDynamicFeature
         fields = ['featureName', 'baseFeature']
     
-    def get_baseFeature(self, obj):
-        basefeature = obj.baseFeature
-
-        if basefeature:
-            return FieldsSerializer(basefeature).data
-        else:
-            return None
-
 
 class ImageDynamicSerializer(serializers.ModelSerializer):
 
-    baseFeature = serializers.SerializerMethodField()
+    baseFeature = FieldsSerializer()
+
     class Meta:
         model = ImageDynamicFeature
         fields = ['featureImage', 'baseFeature']
 
-    def get_baseFeature(self, obj):
-        basefeature = obj.baseFeature
 
-        if basefeature:
-            return FieldsSerializer(basefeature).data
-        else:
-            return None
+
 
 class ProductSerializer(serializers.ModelSerializer):
-    intdynamic = serializers.SerializerMethodField()
-    chardynamic = serializers.SerializerMethodField()
-    imagedynamic = serializers.SerializerMethodField()
+
+    intD = IntDynamicSerializer()
+    charD = CharDynamicSerializer()
+    imgD = ImageDynamicSerializer()
 
 
     class Meta:
         model = Product
-        fields = ['name', 'price', 'quantity', 'product_quantity', 'intdynamic', 'chardynamic', 'imagedynamic']
+        fields = ['name', 'price', 'quantity', 'product_quantity', 'intD', 'charD', 'imgD']
 
     
-    def get_intdynamic(self, obj):
-        intdynamic = obj.intD.all()
-
-        if intdynamic:
-            return IntDynamicSerializer(intdynamic, many=True).data
-        else:
-            return None
-
-    def get_chardynamic(self, obj):
-        chardynamic = obj.charD.all()
-
-        if chardynamic:
-            return CharDynamicSerializer(chardynamic, many=True).data
-        else:
-            return None
-    
-    def get_imagedynamic(self, obj):
-        imagedynamic = obj.imgD.all()
-
-        if imagedynamic:
-            return ImageDynamicSerializer(imagedynamic, many=True).data
-        else:
-            return None
-
 class OrdersSerializer(serializers.ModelSerializer):
-    product = serializers.SerializerMethodField()
+    product = ProductSerializer()
     customer = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
         fields = ['address', 'quantity', 'product' ,'customer']
-
-    def get_product(self, obj):
-        product = obj.product
-
-        if product:
-            return ProductSerializer(product, many=True).data
-        else:
-            return None
-
-    def get_customer(self, obj):
-        customer = obj.customer
-
-        if customer:
-            return CustomerSerializer(customer, many=True).data
-        else:
-            return None
