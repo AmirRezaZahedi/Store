@@ -85,6 +85,7 @@ def update_product(cd,product):
 
     return product
 
+'''
 def fill_form(request,product):
     form = product_detailform()
 
@@ -96,7 +97,7 @@ def fill_form(request,product):
     form.initial['image']=product.image
 
     return form
-
+'''
 def get_fields(category):
     
     #choices=["تعدادی","کیلویی"]
@@ -129,9 +130,9 @@ class OrdersViewSet(ModelViewSet):
 
 
 class ProductViewSet(ModelViewSet):
-    
+
     serializer_class=  ProductSerializer  
- 
+    '''
     def create(self):
             
         #cd = request.POST.copy()
@@ -151,13 +152,16 @@ class ProductViewSet(ModelViewSet):
         #product.save()
 
         return JsonResponse({'message': 'create product successfull'})
-    
-    def get_queryset(self):
+    '''
+    #def get_queryset(self):
         
-        user=self.request.user
-        products=user.seller.product_set.all()
-        return products
-    
+    #    user=self.request.user
+    #    products=user.seller.product_set.all()
+    #    return products
+    def get_queryset(self):
+        return Product.objects.all()
+    #def get_serializer_context(self):
+    #    return {'seller_id': self.request.seller}
 
 class FieldsViewSet(ReadOnlyModelViewSet):
     
@@ -173,15 +177,6 @@ class FieldsViewSet(ReadOnlyModelViewSet):
         return fields 
       
 
-
-
 class CategoryViewSet(ReadOnlyModelViewSet):
     queryset=Category.objects.filter(id=1)
     serializer_class = CategorySerializer
-        
-
-
-    
-
-
-

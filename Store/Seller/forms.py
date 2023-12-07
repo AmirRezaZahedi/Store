@@ -1,6 +1,6 @@
 ﻿from django import forms
 
-
+'''
 class product_detailform(forms.Form):
 
     CHOICES=(
@@ -16,7 +16,7 @@ class product_detailform(forms.Form):
     quantity = forms.IntegerField(min_value=0)
     product_quantity = forms.ChoiceField(choices=CHOICES)
 
-
+'''
 '''
 
 def dynamic_product_form(intFields, charField, imageField):

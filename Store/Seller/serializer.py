@@ -26,21 +26,21 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class FieldsSerializer(serializers.ModelSerializer):
 
-    describerFeatures = serializers.SerializerMethodField()
 
     class Meta:
         model = staticFeature
-        fields = ['id', 'featureName', 'describerFeatures']
-
+        fields = ['featureName']
+    '''
     def get_describerFeatures(self, obj):
        
-        describerFeatures = obj.staticfeature_set.all()
+        describerFeatures = obj.describerFeatures.all()
 
         if describerFeatures:
             return FieldsSerializer(describerFeatures, many=True).data
         else:
             return None
-
+    '''
+        
 
 
 class IntDynamicSerializer(serializers.ModelSerializer):
@@ -49,17 +49,27 @@ class IntDynamicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = intDynamicFeature
-        fields = ['featureNumber', 'baseFeature']
-
+        fields = ['baseFeature', 'featureNumber']
+        
+    def save(self, products_id, **kwargs):
+        
+        baseFeature = self.validated_data.pop('baseFeature')
+        baseFeature = staticFeature.objects.get(featureName=baseFeature["featureName"])
+        self.instance = intDynamicFeature.objects.create( **self.validated_data,products_id=products_id,baseFeature=baseFeature)
 
 class CharDynamicSerializer(serializers.ModelSerializer):
 
     baseFeature = FieldsSerializer()
-
     class Meta:
         model = charDynamicFeature
-        fields = ['featureName', 'baseFeature']
-    
+        fields = ['baseFeature', 'featureName']
+        
+    def save(self, products_id, **kwargs):
+        
+        baseFeature = self.validated_data.pop('baseFeature')
+        baseFeature = staticFeature.objects.get(featureName=baseFeature["featureName"])
+        self.instance = charDynamicFeature.objects.create( **self.validated_data,products_id=products_id,baseFeature=baseFeature)
+
 
 class ImageDynamicSerializer(serializers.ModelSerializer):
 
@@ -69,19 +79,58 @@ class ImageDynamicSerializer(serializers.ModelSerializer):
         model = ImageDynamicFeature
         fields = ['featureImage', 'baseFeature']
 
-
+    def save(self, products_id, **kwargs):
+        
+        baseFeature = self.validated_data.pop('baseFeature')
+        baseFeature = staticFeature.objects.get(featureName=baseFeature["featureName"])
+        self.instance = ImageDynamicFeature.objects.create( **self.validated_data,products_id=products_id,baseFeature=baseFeature)
 
 
 class ProductSerializer(serializers.ModelSerializer):
 
-    intD = IntDynamicSerializer()
-    charD = CharDynamicSerializer()
-    imgD = ImageDynamicSerializer()
+    intD = IntDynamicSerializer(many=True)
+    charD = CharDynamicSerializer(many=True)
+    imgD = ImageDynamicSerializer(many=True)
 
 
     class Meta:
         model = Product
-        fields = ['name', 'price', 'quantity', 'product_quantity', 'intD', 'charD', 'imgD']
+        fields = ['name', 'price', 'quantity', 'product_quantity', 'intD', 'charD', 'imgD','category']
+        
+    def save(self, **kwargs):
+        print(self.validated_data)
+        
+        intD_data = self.validated_data.pop('intD')
+        charD_data = self.validated_data.pop('charD')
+        imgD_data = self.validated_data.pop('imgD')
+        
+        #seller = self.context['seller_id']
+        self.instance = Product.objects.create(**self.validated_data,seller_id=1)
+        
+        product_id = self.instance.id
+        
+        for obj in intD_data:
+            print(obj)
+            int_serializer = IntDynamicSerializer(data=obj)
+            if int_serializer.is_valid():
+                int_serializer.save(products_id=product_id)
+        
+        for obj in charD_data:
+            char_serializer = CharDynamicSerializer(data=obj)
+            if char_serializer.is_valid():
+                char_serializer.save(products_id=product_id)
+        
+        for obj in imgD_data:
+            img_serializer = ImageDynamicSerializer(data=obj)
+            if img_serializer.is_valid():
+                img_serializer.save(products_id=product_id)
+                
+        #self.quantity = self.validated_data['quantity']
+        #self.name = self.validated_data['name']
+        #self.name = self.validated_data['price']
+        
+        
+        
 
     
 class OrdersSerializer(serializers.ModelSerializer):

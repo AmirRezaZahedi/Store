@@ -11,9 +11,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import pymysql
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+pymysql.version_info = (1, 4, 6, 'final', 0)
+pymysql.install_as_MySQLdb()
 
 
 # Quick-start development settings - unsuitable for production
@@ -92,7 +95,7 @@ DATABASES = {
         'NAME': 'store',
         'HOST': 'localhost',
         'USER': 'root',
-        'PASSWORD': '12345678'
+        'PASSWORD': '1234'
     }
 }
 
