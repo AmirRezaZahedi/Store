@@ -6,11 +6,12 @@ from . import views
 
 
 router = routers.DefaultRouter()
+router.register('seller', views.SellerViewSet,basename='seller')
 router.register('products', views.ProductViewSet, basename='products')
 router.register('category', views.CategoryViewSet, basename='category')
 router.register('orders', views.OrdersViewSet, basename='orders')
 
-field_router = routers.NestedDefaultRouter( router, 'category', lookup='category')
+field_router = routers.NestedSimpleRouter( router, 'category', lookup='category')
 field_router.register('fields', views.FieldsViewSet,basename='category-fields')
 
 

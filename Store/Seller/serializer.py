@@ -1,7 +1,28 @@
 from rest_framework import serializers
-from .models import Category,staticFeature,Product,intDynamicFeature,charDynamicFeature,ImageDynamicFeature
+from .models import Seller,Category,staticFeature,Product,intDynamicFeature,charDynamicFeature,ImageDynamicFeature
 from customer.models import Order
 from customer.serializer import CustomerSerializer
+
+from Accounts.serializer import UserCreateSerializer
+
+
+class SellerSerializer(serializers.ModelSerializer):
+    user=UserCreateSerializer()
+
+    class Meta:
+        model = Seller
+        fields = ['user','store_name','store_type']
+
+    def save(self, **kwargs):
+        
+        user_data = self.validated_data.pop('user')
+
+        user_serializer = UserCreateSerializer(data=user_data)
+        if user_serializer.is_valid():
+            user_id=user_serializer.save()
+
+        self.instance = Seller.objects.create(**self.validated_data,user_id=user_id)
+
 
 class CategorySerializer(serializers.ModelSerializer):
     # A serializer for Category model with child category support.

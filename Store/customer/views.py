@@ -2,9 +2,46 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .models import Cart , Order, Address
 from Seller.models import Product , staticFeature,intDynamicFeature,ImageDynamicFeature,charDynamicFeature
-from Accounts.models import User, Seller
+from Accounts.models import User, Seller,Customer
 from .forms import filterform,selectform,orderform,addressform
 from django.contrib import messages
+from .serializer import *
+from django.http import JsonResponse
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+
+from rest_framework.decorators import action, permission_classes
+from rest_framework.permissions import AllowAny, DjangoModelPermissions, DjangoModelPermissionsOrAnonReadOnly, IsAdminUser, IsAuthenticated
+#from Store.permissions import FullDjangoModelPermissions, IsAdminOrReadOnly, ViewCustomerHistoryPermission
+#from Store.pagination import DefaultPaginatio
+
+
+class CustomerViewSet(ModelViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    permission_classes = [IsAdminUser]
+
+    '''
+    @action(detail=True, permission_classes=[ViewCustomerHistoryPermission])
+    def history(self, request, pk):
+        return Response('ok')
+    '''
+
+    @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
+    def me(self, request):
+        (customer, created) = Customer.objects.get_or_create(
+            user_id=request.user.id)
+        if request.method == 'GET':
+            serializer = CustomerSerializer(customer)
+            return Response(serializer.data)
+        elif request.method == 'PUT':
+            serializer = CustomerSerializer(customer, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
+
 
 def query_by_filter(cd,request):
 

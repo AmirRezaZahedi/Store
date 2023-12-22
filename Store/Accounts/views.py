@@ -6,58 +6,6 @@ from django.contrib.auth.decorators import login_required
 from .models import User, Customer, Seller
 from .forms import registerform, seller_registerform, loginform
 from django.http import JsonResponse
-# User registration function
-def register_user(cd):
-    # Create a new user with provided data
-    user = User.objects.create_user(cd['username'], cd['email'], cd['password'])
-    user.first_name = cd['first_name']
-    user.last_name = cd['last_name']
-    user.save()
-    return user
-
-# User registration view
-def register(request):
-    if request.method == 'POST':
-        # Process the registration form data
-        form = registerform(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            # Register the user
-            myuser = register_user(cd)
-            myuser.access = 1
-            myuser.save()
-            # Create a Customer instance
-            customer = Customer(user=myuser)
-            customer.save()
-            # Redirect to login page
-            return redirect('login')
-    else:
-        # Display an empty registration form
-        form = registerform()
-
-    return render(request, "Accounts/customerRegister.html", {'form': form})
-
-# Seller registration view
-def seller_register(request):
-    if request.method == 'POST':
-        # Process the seller registration form data
-        form = seller_registerform(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            # Register the seller user
-            myuser = register_user(cd)
-            myuser.access = 0
-            myuser.save()
-            # Create a Seller instance
-            seller = Seller(user=myuser, store_name=cd['store_name'], store_type=cd['store_type'])
-            seller.save()
-            # Redirect to login page
-            return redirect('login')
-    else:
-        # Display an empty seller registration form
-        form = seller_registerform()
-
-    return render(request, "Accounts/sellerRegister.html", {'form': form})
 
 
 def login(request):
