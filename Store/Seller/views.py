@@ -8,7 +8,7 @@ from .models import *
 from Accounts.models import User,Seller
 from customer.models import Order 
 from .forms import *
-from .serializer import *
+from .serializers import *
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status

@@ -5,7 +5,7 @@ from Seller.models import Product , staticFeature,intDynamicFeature,ImageDynamic
 from Accounts.models import User, Seller,Customer
 from .forms import filterform,selectform,orderform,addressform
 from django.contrib import messages
-from .serializer import *
+from .serializers import *
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status

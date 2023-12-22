@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from .models import Seller,Category,staticFeature,Product,intDynamicFeature,charDynamicFeature,ImageDynamicFeature
 from customer.models import Order
-from customer.serializer import CustomerSerializer
+from customer.serializers import CustomerSerializer
 
-from Accounts.serializer import UserCreateSerializer
+from Accounts.serializers import UserCreateSerializer
 
 
 class SellerSerializer(serializers.ModelSerializer):
