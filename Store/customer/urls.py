@@ -4,7 +4,6 @@ from django.urls.conf import include
 from rest_framework_nested import routers
 
 router = routers.DefaultRouter()
-router.register('customer', views.CustomerViewSet,basename='customer')
 
 urlpatterns = [
 

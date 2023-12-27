@@ -18,8 +18,7 @@ import json
 
 from rest_framework.decorators import action, permission_classes
 from rest_framework.permissions import AllowAny, DjangoModelPermissions, DjangoModelPermissionsOrAnonReadOnly, IsAdminUser, IsAuthenticated
-#from Store.permissions import FullDjangoModelPermissions, IsAdminOrReadOnly, ViewCustomerHistoryPermission
-#from Store.pagination import DefaultPagination
+
 
 def update_product(cd,product):
     # Updta a new product with provided data
@@ -115,33 +114,6 @@ def get_fields(category):
     fields = staticFeature.findFields(features,fields)
 
     return fields
-
-
-
-
-class SellerViewSet(ModelViewSet):
-    queryset = Seller.objects.all()
-    serializer_class = SellerSerializer
-    permission_classes = [IsAdminUser]
-
-    '''
-    @action(detail=True, permission_classes=[ViewCustomerHistoryPermission])
-    def history(self, request, pk):
-        return Response('ok')
-    '''
-
-    @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
-    def me(self, request):
-        (customer, created) = Seller.objects.get_or_create(
-            user_id=request.user.id)
-        if request.method == 'GET':
-            serializer = CustomerSerializer(customer)
-            return Response(serializer.data)
-        elif request.method == 'PUT':
-            serializer = CustomerSerializer(customer, data=request.data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data)
 
 
 @login_required

@@ -1,27 +1,7 @@
 from rest_framework import serializers
 from .models import Seller,Category,staticFeature,Product,intDynamicFeature,charDynamicFeature,ImageDynamicFeature
 from customer.models import Order
-from customer.serializers import CustomerSerializer
-
-from Accounts.serializers import UserCreateSerializer
-
-
-class SellerSerializer(serializers.ModelSerializer):
-    user=UserCreateSerializer()
-
-    class Meta:
-        model = Seller
-        fields = ['user','store_name','store_type']
-
-    def save(self, **kwargs):
-        
-        user_data = self.validated_data.pop('user')
-
-        user_serializer = UserCreateSerializer(data=user_data)
-        if user_serializer.is_valid():
-            user_id=user_serializer.save()
-
-        self.instance = Seller.objects.create(**self.validated_data,user_id=user_id)
+from Accounts.serializers import CustomerSerializer
 
 
 class CategorySerializer(serializers.ModelSerializer):
