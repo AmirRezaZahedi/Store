@@ -11,18 +11,24 @@ from rest_framework.decorators import action, permission_classes
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import AllowAny, DjangoModelPermissions, DjangoModelPermissionsOrAnonReadOnly, IsAdminUser, IsAuthenticated
 from .permissions import IsCustomer,IsSeller
+from rest_framework import permissions
 
 
 class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
-    serializer_class = CustomerSerializer
     permission_classes = [IsCustomer]
+
+    def get_serializer_class(self):
+        if self.request.method=="POST":
+            return CreateCustomerSerializer
+
+        return CustomerSerializer
 
     '''
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request):
         (customer, created) = Customer.objects.get_or_create(
-            user_id=request.user.id)
+            user_id=request.user.customer.id)
         if request.method == 'GET':
             serializer = CustomerSerializer(customer)
             return Response(serializer.data)
@@ -39,15 +45,23 @@ class CustomerViewSet(ModelViewSet):
 
 class SellerViewSet(ModelViewSet):
     queryset = Seller.objects.all()
-    serializer_class = SellerSerializer
     permission_classes = [IsSeller]
 
+    def get_serializer_class(self):
+        if self.request.method=="POST":
+            return CreateSellerSerializer
+
+        return SellerSerializer
+
     '''
-    @action(detail=True, permission_classes=[ViewCustomerHistoryPermission])
-    def history(self, request, pk):
-        return Response('ok')
+    def get_permissions(self):
+        permission_classes = []
+        if self.request.method == "POST":
+            permission_classes = [IsSeller]
+        return [permission() for permissions in permission_classes]
     '''
 
+    '''
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request):
         (seller, created) = Seller.objects.get_or_create(
@@ -60,5 +74,6 @@ class SellerViewSet(ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data)
-
+    
+    '''
 

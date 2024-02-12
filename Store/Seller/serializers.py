@@ -110,6 +110,22 @@ class ProductSerializer(serializers.ModelSerializer):
         
         product_id = self.instance.id
         
+        int_serializer = IntDynamicSerializer(many=True,data=intD_data)
+        if int_serializer.is_valid():
+            int_serializer.save(products_id=product_id)
+
+
+        char_serializer = CharDynamicSerializer(many=True,data=charD_data)
+        if char_serializer.is_valid():
+            char_serializer.save(products_id=product_id)
+
+
+        img_serializer = ImageDynamicSerializer(many=True,data=imgD_data)
+        if img_serializer.is_valid():
+            img_serializer.save(products_id=product_id)
+
+
+        '''
         for obj in intD_data:
             print(obj)
             int_serializer = IntDynamicSerializer(data=obj)
@@ -125,6 +141,7 @@ class ProductSerializer(serializers.ModelSerializer):
             img_serializer = ImageDynamicSerializer(data=obj)
             if img_serializer.is_valid():
                 img_serializer.save(products_id=product_id)
+        '''
                 
         #self.quantity = self.validated_data['quantity']
         #self.name = self.validated_data['name']
@@ -132,8 +149,7 @@ class ProductSerializer(serializers.ModelSerializer):
         
         
         
-
-    
+   
 class OrdersSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     customer = CustomerSerializer()

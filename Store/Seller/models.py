@@ -1,11 +1,11 @@
-from pickle import TRUE
+
 from django.db import models
 from Accounts.models import Seller
 
 class Category(models.Model):
 
     categoryName = models.CharField(max_length=20)
-    referenceCategory = models.ForeignKey('self',on_delete=models.CASCADE, null=TRUE, related_name='childCategories')
+    referenceCategory = models.ForeignKey('self',on_delete=models.CASCADE, null=True, related_name='childCategories')
 
 
     def findRoot(self):
@@ -38,7 +38,7 @@ class staticFeature(models.Model):
     featureName = models.CharField(max_length=20)
     describedFeatures = models.ManyToManyField('self', symmetrical=False,related_name='describerFeatures')
 
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=TRUE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 
 
     @staticmethod

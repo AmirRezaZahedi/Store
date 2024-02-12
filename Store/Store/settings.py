@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 """
 Django settings for Store project.
 
@@ -30,9 +32,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-REST_FRAMEWORK = {
-    'COERCE_DECIMAL_TO_STRING': False
-}
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,13 +43,29 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'djoser',
     'Accounts',
     'Home',
     'Seller',
     'customer',
     'debug_toolbar',
-    'rest_framework',
 ]
+
+REST_FRAMEWORK = {
+    'COERCE_DECIMAL_TO_STRING': False,
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+   'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+
 INTERNAL_IPS = [
     # ...
     '127.0.0.1',
@@ -148,5 +165,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create':'Accounts.serializers.UserCreateSerializer',
+        'current_user':'Accounts.serializers.UserSerializer'
+    }
+}
 
 AUTH_USER_MODEL = 'Accounts.User'

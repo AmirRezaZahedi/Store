@@ -1,50 +1,93 @@
+
 from rest_framework import serializers
 from .models import User, Customer, Seller
-from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
-from django.contrib.auth.hashers import make_password
+from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer ,UserSerializer as BaseUserSerializer
 
 class UserCreateSerializer(BaseUserCreateSerializer):
 
     class Meta(BaseUserCreateSerializer.Meta):
-        fields = ['id', 'username', 'password', 'email', 'first_name', 'last_name']
-
-    def save(self, **kwargs):
-        self.validated_data["password"] = make_password(self.validated_data['password'])
-        self.instance = User.objects.create(**self.validated_data)
-        return self.instance.id
+        fields = ['id', 'username', 'password', 'email', 'first_name', 'last_name','access']
 
 
-class CustomerSerializer(serializers.ModelSerializer):
+class UserSerializer(BaseUserSerializer):
+    class Meta(BaseUserSerializer.Meta):
+        fields = ['id', 'username', 'email','first_name','last_name']
+
+
+
+class CreateCustomerSerializer(serializers.ModelSerializer):
     user=UserCreateSerializer()
-    
+
     class Meta:
         model = Customer
-        fields = ['user']
+        fields = ['id','user','store_name','store_type']
 
     def save(self, **kwargs):
         
         user_data = self.validated_data.pop('user')
+        user_data['access']=1
 
         user_serializer = UserCreateSerializer(data=user_data)
-        if user_serializer.is_valid():
-            user_id=user_serializer.save()
-        self.instance = Customer.objects.create(**self.validated_data,user_id=user_id)
+        user_serializer.is_valid(raise_exception=True)
+        user=user_serializer.save()
+
+        self.instance = Customer.objects.create(**self.validated_data,user=user)
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    user=UserSerializer()
+
+    class Meta:
+        model = Customer
+        fields = ['id','user','store_name','store_type']
+
+    def save(self, **kwargs):
+        
+        if self.instance is not None:
+            user_data = self.validated_data.pop('user')
+
+            user_serializer = UserSerializer(self.instance.user,data=user_data)
+            user_serializer.is_valid(raise_exception=True)
+            user=user_serializer.save()
+            self.instance = self.update(self.instance, self.validated_data)
+
+ 
+            
 
 
 
-class SellerSerializer(serializers.ModelSerializer):
+class CreateSellerSerializer(serializers.ModelSerializer):
     user=UserCreateSerializer()
 
     class Meta:
         model = Seller
-        fields = ['user','store_name','store_type']
+        fields = ['id','user','store_name','store_type']
 
     def save(self, **kwargs):
         
         user_data = self.validated_data.pop('user')
+        user_data['access']=0
 
         user_serializer = UserCreateSerializer(data=user_data)
-        if user_serializer.is_valid():
-            user_id=user_serializer.save()
+        user_serializer.is_valid(raise_exception=True)
+        user=user_serializer.save()
+
+        self.instance = Seller.objects.create(**self.validated_data,user=user)
+
+
+class SellerSerializer(serializers.ModelSerializer):
+    user=UserSerializer()
+
+    class Meta:
+        model = Seller
+        fields = ['id','user','store_name','store_type']
+
+    def save(self, **kwargs):
         
-        self.instance = Seller.objects.create(**self.validated_data,user_id=user_id)
+        if self.instance is not None:
+            user_data = self.validated_data.pop('user')
+
+            user_serializer = UserSerializer(self.instance.user,data=user_data)
+            user_serializer.is_valid(raise_exception=True)
+            user=user_serializer.save()
+            self.instance = self.update(self.instance, self.validated_data)
